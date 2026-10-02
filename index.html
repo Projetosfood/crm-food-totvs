@@ -192,6 +192,18 @@
                     <p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>
                 </div>
 
+                <!-- Tópico PROJETOS SEM REQUISITOS -->
+                <div class="pt-2 pb-2 mt-2">
+                    <div class="flex items-center justify-between px-3">
+                        <p class="text-xs font-semibold text-red-400 uppercase tracking-wider">Sem Requisitos</p>
+                        <i class="fas fa-exclamation-circle text-red-400 text-xs"></i>
+                    </div>
+                </div>
+                <div id="sidebarFailedProjectsList" class="space-y-1 mb-4 flex flex-col gap-1">
+                    <!-- Projetos mapeados como fora do perfil -->
+                    <p class="text-xs text-gray-500 px-3 italic">Nenhum mapeado</p>
+                </div>
+
                 <div id="adminNavContainer" class="hidden">
                     <div class="pt-4 pb-1 border-t border-gray-100">
                         <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Gestão</p>
@@ -426,13 +438,10 @@
                 <i class="fas fa-times text-2xl text-red-600"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">Critérios Não Atendidos</h3>
-            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto (menos de 10 lojas ativas).<br><br>Por favor, envie um e-mail para o líder do setor.</p>
+            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto (menos de 10 lojas ativas). O registro foi salvo para mapeamento.<br><br>Por favor, comunique o líder do setor: <strong>kevenny.costa@totvs.com.br</strong></p>
             <div class="flex flex-col gap-2">
-                <button onclick="window.location.href='mailto:projetos.food@totvs.com.br?subject=Apoio Comercial - Cliente Fora do Perfil'" class="w-full inline-flex justify-center items-center gap-2 rounded-lg border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 sm:text-sm">
-                    <i class="fas fa-envelope"></i> Enviar E-mail
-                </button>
                 <button onclick="closeProjectModal('failure')" class="w-full inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
-                    Voltar ao Formulário
+                    Ir para Dashboard
                 </button>
             </div>
         </div>
@@ -492,9 +501,7 @@
             
             setTimeout(() => {
                 modal.classList.replace('flex', 'hidden');
-                if(type === 'success') {
-                    switchView('dashboard');
-                }
+                switchView('dashboard');
             }, 300);
         };
         
@@ -801,9 +808,11 @@
         function renderProjectsDashboard() {
             const tbody = document.getElementById('projectsTableBody');
             const sidebarList = document.getElementById('sidebarProjectsList');
+            const sidebarFailedList = document.getElementById('sidebarFailedProjectsList');
             
             tbody.innerHTML = '';
             sidebarList.innerHTML = '';
+            sidebarFailedList.innerHTML = '';
             
             let countPending = 0;
             let countReady = 0;
@@ -811,6 +820,7 @@
             if (allProjects.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto encontrado.</td></tr>`;
                 sidebarList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>`;
+                sidebarFailedList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum mapeado</p>`;
                 document.getElementById('statTotal').textContent = '0';
                 document.getElementById('statPending').textContent = '0';
                 document.getElementById('statReady').textContent = '0';
@@ -830,6 +840,7 @@
                 let statusBadge = '';
                 if(p.status === 'Aguardando Pré-vendas') statusBadge = 'bg-amber-100 text-amber-700 border-amber-200';
                 else if(p.status === 'Pronto para Início') statusBadge = 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                else if(p.status === 'Fora do Perfil') statusBadge = 'bg-red-100 text-red-700 border-red-200';
                 else statusBadge = 'bg-blue-100 text-blue-700 border-blue-200';
 
                 // Injetar na Tabela Principal
@@ -848,13 +859,24 @@
                 `;
                 tbody.appendChild(tr);
 
-                // Injetar no Menu Lateral (Projetos)
+                // Injetar no Menu Lateral
                 const sideBtn = document.createElement('button');
                 sideBtn.onclick = () => openProjectDetails(p);
-                sideBtn.className = 'w-full text-left truncate px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors flex items-center gap-2';
-                sideBtn.innerHTML = `<i class="fas fa-file-signature text-gray-400 text-xs"></i><span class="truncate">${p.nome}</span>`;
-                sidebarList.appendChild(sideBtn);
+                sideBtn.className = 'w-full text-left truncate px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-2 ';
+                
+                if (p.status === 'Fora do Perfil') {
+                    sideBtn.className += 'text-red-600 hover:bg-red-50 hover:text-red-700';
+                    sideBtn.innerHTML = `<i class="fas fa-file-excel text-red-400 text-xs"></i><span class="truncate">${p.nome}</span>`;
+                    sidebarFailedList.appendChild(sideBtn);
+                } else {
+                    sideBtn.className += 'text-gray-600 hover:bg-blue-50 hover:text-blue-700';
+                    sideBtn.innerHTML = `<i class="fas fa-file-signature text-gray-400 text-xs"></i><span class="truncate">${p.nome}</span>`;
+                    sidebarList.appendChild(sideBtn);
+                }
             });
+
+            if (sidebarList.children.length === 0) sidebarList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>`;
+            if (sidebarFailedList.children.length === 0) sidebarFailedList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum mapeado</p>`;
 
             document.getElementById('statTotal').textContent = allProjects.length;
             document.getElementById('statPending').textContent = countPending;
@@ -924,10 +946,8 @@
             const q9 = document.getElementById('q9_aceite').value.trim();
             const q10 = document.getElementById('q10_inegociavel').value.trim();
 
-            if(parseInt(q3) < 10) {
-                showProjectModal('failure');
-                return;
-            }
+            const isQualified = parseInt(q3) >= 10;
+            const projectStatus = isQualified ? 'Aguardando Pré-vendas' : 'Fora do Perfil';
 
             try {
                 const projectData = {
@@ -943,13 +963,18 @@
                     q8_stakeholders: q8,
                     q9_aceite: q9,
                     q10_inegociavel: q10,
-                    status: 'Aguardando Pré-vendas',
+                    status: projectStatus,
                     criadoPor: currentUser.nome,
                     criadoEm: serverTimestamp()
                 };
 
                 await addDoc(collection(db, 'projetos'), projectData);
-                showProjectModal('success');
+                
+                if (isQualified) {
+                    showProjectModal('success');
+                } else {
+                    showProjectModal('failure');
+                }
             } catch (error) {
                 console.error("Erro abrir projeto:", error);
                 showToast("Erro ao abrir projeto", "error");
