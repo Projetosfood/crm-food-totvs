@@ -342,17 +342,23 @@
 
             <!-- View: Project Form -->
             <main id="view-project-form" class="hidden flex-1 overflow-auto p-6 bg-gray-50/50">
-                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
                     
-                    <!-- Progress Bar -->
-                    <div class="bg-gray-50 border-b border-gray-200 p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-blue-600" id="formProgressText">Seção 1 de 4</span>
-                            <span class="text-sm text-gray-500" id="formStatusBadge">Status: Em Criação</span>
+                    <!-- Header do Projeto (Substitui a antiga barra de progresso) -->
+                    <div class="bg-gray-50 border-b border-gray-200 p-6 flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-gray-800" id="formMainTitle">Abertura de Projeto</h2>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200" id="formStatusBadge">Status: Em Criação</span>
+                    </div>
+
+                    <!-- Banner de Ação do Pré-Vendas (Oculto por padrão) -->
+                    <div id="preVendasBanner" class="hidden bg-amber-50 p-6 border-b border-amber-200 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-amber-800 font-bold text-lg"><i class="fas fa-clock mr-2"></i> Aguardando Mapeamento</h4>
+                            <p class="text-amber-700 text-sm">Este projeto requer o preenchimento do Mapeamento de Negócio pelo Pré-vendas.</p>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 25%" id="formProgressBar"></div>
-                        </div>
+                        <button type="button" id="btnIniciarPreVendas" onclick="iniciarPreVendas()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors shadow-sm">
+                            Preencher Mapeamento
+                        </button>
                     </div>
 
                     <form id="projectForm" class="p-8">
@@ -361,7 +367,7 @@
                         <div id="section1" class="form-section">
                             <div class="flex items-center gap-3 mb-6 pb-2 border-b">
                                 <div class="bg-blue-100 p-2 rounded text-blue-600"><i class="fas fa-briefcase"></i></div>
-                                <h3 class="text-xl font-bold text-gray-800">Seção 1: Dados de Abertura</h3>
+                                <h3 class="text-xl font-bold text-gray-800">Dados de Abertura (Comercial)</h3>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -423,10 +429,37 @@
                                 </div>
                             </div>
                             
-                            <div id="s1-actions" class="mt-8 flex justify-end">
-                                <!-- Botão atualizado para Salvar Projeto -->
+                            <div id="s1-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
                                 <button type="button" onclick="salvarSecao1()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
                                     Salvar Projeto <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: Pré-vendas (Mapeamento) -->
+                        <div id="section2_prevendas" class="hidden form-section border-t border-gray-200 pt-8 mt-4">
+                            <div class="flex items-center gap-3 mb-6 pb-2 border-b">
+                                <div class="bg-amber-100 p-2 rounded text-amber-600"><i class="fas fa-clipboard-check"></i></div>
+                                <h3 class="text-xl font-bold text-gray-800">Mapeamento de Negócio (Pré-vendas)</h3>
+                            </div>
+                            
+                            <div class="space-y-8">
+                                <!-- Eixo Vender -->
+                                <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
+                                    <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Eixo Vender</h4>
+                                    <div id="eixoVenderContainer" class="space-y-5"></div>
+                                </div>
+
+                                <!-- Eixo Gerir -->
+                                <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-100">
+                                    <h4 class="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2"><i class="fas fa-cogs"></i> Eixo Gerir</h4>
+                                    <div id="eixoGerirContainer" class="space-y-5"></div>
+                                </div>
+                            </div>
+
+                            <div id="s2-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
+                                <button type="button" onclick="salvarPreVendas()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                                    Salvar Mapeamento e Enviar p/ PMO <i class="fas fa-check-double"></i>
                                 </button>
                             </div>
                         </div>
@@ -499,6 +532,66 @@
         let allUsers = [];
         let userToDeleteId = null;
         let projectToDeleteId = null;
+
+        // Arrays com as 33 perguntas do Pré-Vendas
+        const eixoVender = [
+            "1. Possui estratégias para aumentar o ticket médio, como combos, venda orientada, cross-sell e up-sell?",
+            "2. Como gerencia o envio de pedidos para a cozinha?",
+            "3. As formas de pagamento estão integradas diretamente ao PDV? Quais meios (cartão, pix, carteiras), nível de integração, necessidade de retrabalho e impacto no fechamento de caixa.",
+            "4. Trabalha com meta por funcionário (atendente/garçom)? Se sim, como são definidas e acompanhadas as metas?",
+            "5. Como funciona o fluxo completo da retirada de pedidos (desde a separação até a entrega ao cliente)? Existe conferência, controle por senha/painel, registro em sistema ou algum tipo de validação?",
+            "6. Utiliza CRM ou programas de fidelidade? (Tipo de ferramenta, como os dados são coletados, utilizados e se geram recorrência)",
+            "7. Faz vendas em marketplaces? (Quais canais, nível de integração ao sistema, gestão de cardápio, preço e estratégia de delivery)",
+            "8. Possui aplicativo próprio para delivery? (Tráfego, adesão, recorrência e uso de dados do cliente)",
+            "9. O cliente pode comprar online e retirar na loja? (Fluxo operacional, priorização, impacto no salão e na experiência do cliente)",
+            "10. Como faz a gestão logística do delivery? (Próprio ou terceiros, controle de prazos, custos e falhas)",
+            "11. Como você gerencia a roteirização e alocação de entregadores? (Critérios, ferramentas utilizadas, tratamento de atrasos e impacto no custo e satisfação do cliente)"
+        ];
+
+        const eixoGerir = [
+            "12. Como os pedidos de compra são gerados e registrados no sistema? (O que dispara a compra: estoque mínimo, previsão, experiência do gestor, urgência?)",
+            "13. Como é realizada a cotação de compras? (Quantidade de fornecedores, periodicidade, critérios de escolha: preço, prazo, qualidade, contrato?)",
+            "14. Como é feita a previsão de compras? (Baseada em histórico de vendas, sazonalidade, eventos, feeling do gestor ou sistema?)",
+            "15. Como é feita a entrada das notas fiscais no sistema? (Via XML/Manifesto, manual, responsável definido, conferência de divergências?)",
+            "16. Como as fichas técnicas são criadas, atualizadas e utilizadas no dia a dia? (Quem cria, quando revisa, impacto real no CMV?)",
+            "17. Como é controlado o consumo interno/consumo de funcionários? (Existe política, limite, registro em sistema ou é informal?)",
+            "18. Como é realizada a contagem de estoque? (Frequência, método, responsável, uso de sistema e tratamento das divergências?)",
+            "19. Como funciona a transferência de estoque entre unidades? (Existe processo padrão, registro em sistema, impacto no custo e no estoque?)",
+            "20. Como são controlados os desperdícios e perdas? (Tipos mapeados, registro obrigatório, análise de causa, ações corretivas?)",
+            "21. Como são controladas as entradas e saídas financeiras no dia a dia? (Fluxo de caixa diário, semanal ou mensal? Manual ou via sistema?)",
+            "22. Como é feita a baixa das contas a pagar? (No momento do pagamento, por responsável definido, com conciliação)",
+            "23. Como é feita a gestão e conciliação das contas bancárias? (Automática ou manual? Periodicidade?)",
+            "24. Como o DRE é acompanhado e utilizado na tomada de decisão? (Periodicidade, indicadores analisados, quem analisa?)",
+            "25. Como o custo dos produtos vendidos (CMV) é acompanhado? (Por período, por produto, por unidade? Gera ações práticas?)",
+            "26. Como funciona a gestão centralizada de cardápio, preços e estoque? (Padrão obrigatório, autonomia das unidades, exceções?)",
+            "27. Como é monitorado o desempenho financeiro e de vendas de cada unidade? (Indicadores, ranking, comparativos, frequência?)",
+            "28. Como são controlados os repasses de royalties e taxas? (Automático, manual, auditoria?)",
+            "29. Como funciona o controle de acessos dos franqueados aos sistemas? (Perfis, limitações, auditoria?)",
+            "30. Como é feita a gestão e homologação de fornecedores? (Centralizado, livre, contratos, padrões, escreva com o máximo de detalhes)",
+            "31. Como metas de faturamento são definidas e acompanhadas por franqueado? (Critérios, frequência, impacto em decisões?)",
+            "32. A franqueadora define o PDV e o ERP das franquias? (Obrigatório, recomendado ou livre? Integrações?)",
+            "33. Trabalha com outro sistema que auxilia na gestão do negócio, ERP ou qualquer software adicional? (Uso completo, parcial ou apenas fiscal?)"
+        ];
+
+        function renderPreVendasForm() {
+            const renderFields = (array, containerId, prefix, startNum) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                array.forEach((q, index) => {
+                    const num = index + startNum;
+                    const id = prefix + num;
+                    container.innerHTML += `
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">${q} *</label>
+                            <textarea id="${id}" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none s2-field" required></textarea>
+                        </div>
+                    `;
+                });
+            };
+            // Renderiza injetando no HTML
+            renderFields(eixoVender, 'eixoVenderContainer', 'pv_v_', 1);
+            renderFields(eixoGerir, 'eixoGerirContainer', 'pv_g_', 12);
+        }
 
         window.closeModal = (id) => document.getElementById(id).classList.replace('flex', 'hidden');
 
@@ -963,9 +1056,12 @@
             habilitarCampos('s1-field', true);
             document.getElementById('s1-actions').classList.remove('hidden');
             
-            document.getElementById('formProgressText').textContent = 'Seção 1 de 4 (Abertura)';
-            document.getElementById('formProgressBar').style.width = '25%';
+            document.getElementById('formMainTitle').textContent = 'Abertura de Projeto';
             document.getElementById('formStatusBadge').textContent = 'Status: Em Criação';
+            document.getElementById('formStatusBadge').className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200';
+            
+            document.getElementById('preVendasBanner').classList.add('hidden');
+            document.getElementById('section2_prevendas').classList.add('hidden');
         }
 
         window.openProjectDetails = function(project) {
@@ -983,12 +1079,61 @@
             document.getElementById('q9_aceite').value = project.q9_aceite || '';
             document.getElementById('q10_inegociavel').value = project.q10_inegociavel || '';
             
+            document.getElementById('formMainTitle').textContent = `Projeto: ${project.nome}`;
             document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
+            
+            let badgeColor = 'bg-blue-100 text-blue-700 border-blue-200';
+            if(project.status === 'Aguardando Pré-vendas') badgeColor = 'bg-amber-100 text-amber-700 border-amber-200';
+            if(project.status === 'Pronto para Início') badgeColor = 'bg-emerald-100 text-emerald-700 border-emerald-200';
+            if(project.status === 'Fora do Perfil') badgeColor = 'bg-red-100 text-red-700 border-red-200';
+            document.getElementById('formStatusBadge').className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor}`;
             
             habilitarCampos('s1-field', false);
             document.getElementById('s1-actions').classList.add('hidden');
             
+            // Controle de Visibilidade do Fluxo de Pré-Vendas
+            const banner = document.getElementById('preVendasBanner');
+            const prevendasSection = document.getElementById('section2_prevendas');
+            const btnIniciar = document.getElementById('btnIniciarPreVendas');
+            
+            banner.classList.add('hidden');
+            prevendasSection.classList.add('hidden');
+            
+            if (project.status === 'Aguardando Pré-vendas') {
+                banner.classList.remove('hidden');
+                // Apenas Administrador e Pré Vendas podem clicar no botão de preencher
+                if (currentRole === 'Pré Vendas' || currentRole === 'Administrador') {
+                    btnIniciar.classList.remove('hidden');
+                } else {
+                    btnIniciar.classList.add('hidden');
+                }
+            } else if (project.status === 'Pronto para Início' || project.status === 'Em Andamento') {
+                // Mapeamento já foi concluído, mostra ele como leitura
+                prevendasSection.classList.remove('hidden');
+                habilitarCampos('s2-field', false);
+                document.getElementById('s2-actions').classList.add('hidden');
+                
+                // Preencher com os dados salvos
+                for(let i=1; i<=11; i++) {
+                    const el = document.getElementById('pv_v_' + i);
+                    if(el) el.value = project['pv_v_' + i] || '';
+                }
+                for(let i=12; i<=33; i++) {
+                    const el = document.getElementById('pv_g_' + i);
+                    if(el) el.value = project['pv_g_' + i] || '';
+                }
+            }
+            
             switchView('project-form');
+        }
+
+        window.iniciarPreVendas = function() {
+            document.getElementById('preVendasBanner').classList.add('hidden');
+            document.getElementById('section2_prevendas').classList.remove('hidden');
+            habilitarCampos('s2-field', true);
+            document.getElementById('s2-actions').classList.remove('hidden');
+            // Animação para rolar a tela direto para as perguntas novas
+            document.getElementById('section2_prevendas').scrollIntoView({ behavior: 'smooth' });
         }
 
         function habilitarCampos(classe, habilitar) {
@@ -1052,7 +1197,41 @@
             }
         }
 
-        window.onload = initAuth;
+        window.salvarPreVendas = async function() {
+            const form = document.getElementById('projectForm');
+            if(!form.checkValidity()) {
+                form.reportValidity(); // Mostra aviso caso esqueçam alguma das 33 perguntas
+                return;
+            }
+
+            // Coleta todas as 33 respostas automaticamente
+            const prevendasData = {};
+            for(let i=1; i<=11; i++) {
+                prevendasData['pv_v_' + i] = document.getElementById('pv_v_' + i).value.trim();
+            }
+            for(let i=12; i<=33; i++) {
+                prevendasData['pv_g_' + i] = document.getElementById('pv_g_' + i).value.trim();
+            }
+
+            // Atualiza status e quem preencheu
+            prevendasData.status = 'Pronto para Início';
+            prevendasData.preVendasResponsavel = currentUser.nome;
+            prevendasData.preVendasData = serverTimestamp();
+
+            try {
+                await updateDoc(doc(db, 'projetos', currentProjectId), prevendasData);
+                showToast("Mapeamento salvo com sucesso! Projeto enviado para o PMO.");
+                switchView('dashboard');
+            } catch (error) {
+                console.error("Erro salvar pre-vendas:", error);
+                showToast("Erro ao salvar mapeamento.", "error");
+            }
+        }
+
+        window.onload = () => {
+            initAuth();
+            renderPreVendasForm();
+        };
 
     </script>
 </body>
