@@ -301,78 +301,78 @@
                                 <h3 class="text-xl font-bold text-gray-800">Seção 1: Dados de Abertura</h3>
                             </div>
                             
+                            <!-- Aviso de Bloqueio (Oculto por padrão) -->
+                            <div class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200 hidden" id="criterioWarning">
+                                <i class="fas fa-exclamation-triangle mr-2"></i><strong>Critério não atendido:</strong> O projeto só pode ser aberto se a rede possuir <strong>10 lojas ativas ou mais</strong> (Pergunta 3).
+                            </div>
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Projeto *</label>
-                                    <input type="text" id="p_nome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">1. Nome da Marca *</label>
+                                    <input type="text" id="q1_marca" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Cliente *</label>
-                                    <input type="text" id="p_cliente" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Valor Estimado (R$)</label>
-                                    <input type="number" id="p_valor" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Condição Obrigatória *</label>
-                                    <select id="p_condicao" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">2. Solução contratada *</label>
+                                    <select id="q2_solucao" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
                                         <option value="">Selecione...</option>
-                                        <option value="sim">Documentação Aprovada pelo Cliente</option>
-                                        <option value="nao">Documentação Pendente</option>
+                                        <option value="Novo Cliente">Novo Cliente</option>
+                                        <option value="Novo Módulo">Novo Módulo</option>
+                                        <option value="Migração de PDV">Migração de PDV</option>
+                                        <option value="Nova Funcionalidade">Nova Funcionalidade</option>
                                     </select>
-                                    <p class="text-xs text-red-500 mt-1 hidden" id="condicaoWarning"><i class="fas fa-exclamation-circle"></i> O projeto só pode ser aberto com documentação aprovada.</p>
                                 </div>
                             </div>
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Escopo Inicial Resumido</label>
-                                <textarea id="p_escopo_ini" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field"></textarea>
-    <div id="forgotPasswordModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
-        <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] relative">
-            <button onclick="closeModal('forgotPasswordModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
-            </button>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Criar ou Recuperar Senha</h3>
-            <p class="text-sm text-gray-600 mb-4">Digite seu e-mail corporativo para verificar sua conta.</p>
-            
-            <form id="verifyEmailForm" class="flex flex-col gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                    <input type="email" id="resetEmailInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="seunome@totvs.com.br" required>
-                </div>
-                <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">Verificar Conta</button>
-            </form>
 
-            <form id="definePasswordForm" class="hidden flex flex-col gap-4">
-                <div class="bg-emerald-50 text-emerald-700 p-3 rounded-lg text-sm mb-2 border border-emerald-200">
-                    <i class="fas fa-check-circle mr-1"></i> E-mail localizado! Crie sua senha de acesso.
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha</label>
-                    <input type="password" id="newPasswordInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required minlength="6">
-                </div>
-                <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">Salvar Senha e Acessar</button>
-            </form>
-        </div>
-    </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">3. Lojas ativas (Físicas/Dark) *</label>
+                                    <input type="number" id="q3_lojas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" placeholder="Ex: 15" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">4. Início da Loja Piloto *</label>
+                                    <input type="date" id="q4_data_inicio" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">5. Conclusão da Loja Piloto *</label>
+                                    <input type="date" id="q5_data_fim" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                </div>
+                            </div>
 
-    <div id="adminUserModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
-        <div class="bg-white p-6 rounded-xl shadow-2xl w-[450px] max-w-[90%] relative">
-            <button onclick="closeModal('adminUserModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="flex items-center gap-2 mb-4">
-                <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">Novo Usuário</h3>
-            </div>
-            
-            <form id="createUserForm" class="flex flex-col gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-                    <input type="text" id="newUserName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
-                </div>
+                            <div class="space-y-6 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">6. Módulos contratados e o que NÃO faz parte desta fase? *</label>
+                                    <textarea id="q6_escopo" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" placeholder="Ex: Módulo Estoque e PDV inclusos. Financeiro fora do escopo." required></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">7. Qual é a oportunidade de negócio ou valor esperado nesta implantação? *</label>
+                                    <textarea id="q7_valor_negocio" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">8. Exige gerenciar agendas e dependências entre diferentes stakeholders? *</label>
+                                    <select id="q8_stakeholders" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="Sim">Sim, exige gerenciamento</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">9. Critério formal e objetivo para assinar o termo de aceite da implantação *</label>
+                                    <textarea id="q9_aceite" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">10. O que é inegociável na operação, na visão do cliente? *</label>
+                                    <textarea id="q10_inegociavel" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                </div>
+                            </div>
+                            
+                            <div id="s1-actions" class="mt-8 flex justify-end">
+                                <button type="button" onclick="salvarSecao1()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2">
+                                    Abrir Projeto <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">E-mail (apenas @totvs.com.br / .com)</label>
                     <input type="email" id="newUserEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
@@ -805,7 +805,9 @@
             currentProjectId = null;
             currentProjectData = null;
             document.getElementById('projectForm').reset();
-            document.getElementById('condicaoWarning').classList.add('hidden');
+            
+            const aviso = document.getElementById('criterioWarning');
+            if(aviso) aviso.classList.add('hidden');
             
             // Lock UI for new project
             habilitarCampos('s1-field', true);
@@ -828,14 +830,20 @@
             currentProjectData = project;
             
             // Fill Form
-            document.getElementById('p_nome').value = project.nome || '';
-            document.getElementById('p_cliente').value = project.cliente || '';
-            document.getElementById('p_valor').value = project.valor || '';
-            document.getElementById('p_condicao').value = project.condicao || '';
-            document.getElementById('p_escopo_ini').value = project.escopo_ini || '';
+            document.getElementById('q1_marca').value = project.q1_marca || project.nome || '';
+            document.getElementById('q2_solucao').value = project.q2_solucao || '';
+            document.getElementById('q3_lojas').value = project.q3_lojas || '';
+            document.getElementById('q4_data_inicio').value = project.q4_data_inicio || '';
+            document.getElementById('q5_data_fim').value = project.q5_data_fim || '';
+            document.getElementById('q6_escopo').value = project.q6_escopo || '';
+            document.getElementById('q7_valor_negocio').value = project.q7_valor_negocio || '';
+            document.getElementById('q8_stakeholders').value = project.q8_stakeholders || '';
+            document.getElementById('q9_aceite').value = project.q9_aceite || '';
+            document.getElementById('q10_inegociavel').value = project.q10_inegociavel || '';
             
-            document.getElementById('p_arquitetura').value = project.arquitetura || '';
-            document.getElementById('p_horas_previstas').value = project.horas_previstas || '';
+            // Secao 2 (se houver)
+            if(document.getElementById('p_arquitetura')) document.getElementById('p_arquitetura').value = project.arquitetura || '';
+            if(document.getElementById('p_horas_previstas')) document.getElementById('p_horas_previstas').value = project.horas_previstas || '';
 
             // Setup UI based on Role and Status
             document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
@@ -879,27 +887,45 @@
         }
 
         window.salvarSecao1 = async function() {
-            const nome = document.getElementById('p_nome').value;
-            const cliente = document.getElementById('p_cliente').value;
-            const condicao = document.getElementById('p_condicao').value;
+            const q1 = document.getElementById('q1_marca').value.trim();
+            const q2 = document.getElementById('q2_solucao').value;
+            const q3 = document.getElementById('q3_lojas').value;
+            const q4 = document.getElementById('q4_data_inicio').value;
+            const q5 = document.getElementById('q5_data_fim').value;
+            const q6 = document.getElementById('q6_escopo').value.trim();
+            const q7 = document.getElementById('q7_valor_negocio').value.trim();
+            const q8 = document.getElementById('q8_stakeholders').value;
+            const q9 = document.getElementById('q9_aceite').value.trim();
+            const q10 = document.getElementById('q10_inegociavel').value.trim();
 
-            if(!nome || !cliente || !condicao) {
-                showToast("Preencha os campos obrigatórios (*)", "error");
+            if(!q1 || !q2 || !q3 || !q4 || !q5 || !q6 || !q7 || !q8 || !q9 || !q10) {
+                showToast("Preencha todas as 10 perguntas obrigatórias (*)", "error");
                 return;
             }
 
-            if(condicao !== 'sim') {
-                document.getElementById('condicaoWarning').classList.remove('hidden');
+            // Critério de Bloqueio (Lojas < 10)
+            if(parseInt(q3) < 10) {
+                document.getElementById('criterioWarning').classList.remove('hidden');
+                document.getElementById('criterioWarning').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
+            } else {
+                document.getElementById('criterioWarning').classList.add('hidden');
             }
 
             try {
                 const projectData = {
-                    nome,
-                    cliente,
-                    valor: document.getElementById('p_valor').value,
-                    condicao,
-                    escopo_ini: document.getElementById('p_escopo_ini').value,
+                    nome: q1, // Mapeado para exibir o Nome na tabela do Dashboard
+                    cliente: q1, // Mapeado para exibir o Cliente na tabela do Dashboard
+                    q1_marca: q1,
+                    q2_solucao: q2,
+                    q3_lojas: parseInt(q3),
+                    q4_data_inicio: q4,
+                    q5_data_fim: q5,
+                    q6_escopo: q6,
+                    q7_valor_negocio: q7,
+                    q8_stakeholders: q8,
+                    q9_aceite: q9,
+                    q10_inegociavel: q10,
                     status: 'Aguardando Pré-vendas',
                     criadoPor: currentUser.nome,
                     criadoEm: serverTimestamp()
