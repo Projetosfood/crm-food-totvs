@@ -285,7 +285,7 @@
                             </thead>
                             <tbody id="projectsTableBody" class="divide-y divide-gray-100">
                                 <!-- Projects will be injected here -->
-                                <tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Carregando projetos...</td></tr>
+                                <tr><td colspan="5" class="px-6 py-8 text-center text-gray-500" id="loadingProjectsMessage">Carregando projetos...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -379,15 +379,15 @@
 
                             <div class="space-y-6 mb-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">6. Módulos contratados e o que NÃO faz parte desta fase? *</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">6. Liste resumidamente os módulos/sistemas contratados (O que SERÁ entregue) e o que ficou acordado que NÃO faz parte desta fase (O que está FORA do escopo)? *</label>
                                     <textarea id="q6_escopo" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">7. Qual é a oportunidade de negócio ou valor esperado nesta implantação? *</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">7. Qual é a oportunidade de negócio ou valor que a franquia espera alcançar com o ecossistema TOTVS nesta implantação? *</label>
                                     <textarea id="q7_valor_negocio" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">8. Exige gerenciar agendas e dependências entre diferentes stakeholders? *</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">8. A execução exige gerenciar agendas e dependências entre diferentes stakeholders (franqueados, time de TI da franquia, terceiros)? *</label>
                                     <select id="q8_stakeholders" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
                                         <option value="">Selecione...</option>
                                         <option value="Sim">Sim, exige gerenciamento</option>
@@ -395,7 +395,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">9. Critério formal e objetivo para assinar o termo de aceite da implantação *</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">9. Qual é o critério formal e objetivo que a franquia utilizará para assinar o termo de aceite da implantação? *</label>
                                     <textarea id="q9_aceite" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
                                 </div>
                                 <div>
@@ -405,7 +405,7 @@
                             </div>
                             
                             <div id="s1-actions" class="mt-8 flex justify-end">
-                                <!-- Botão agora com validação nativa ativada via JS -->
+                                <!-- Botão atualizado para Salvar Projeto -->
                                 <button type="button" onclick="salvarSecao1()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
                                     Salvar Projeto <i class="fas fa-save"></i>
                                 </button>
@@ -432,13 +432,14 @@
         </div>
     </div>
 
+    <!-- Atualizado: O e-mail do lider no texto -->
     <div id="projectFailureModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[80]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-[400px] max-w-[90%] text-center relative transform transition-all scale-95 opacity-0 duration-300" id="projectFailureModalContent">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
                 <i class="fas fa-times text-2xl text-red-600"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">Critérios Não Atendidos</h3>
-            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto (menos de 10 lojas ativas). O registro foi salvo para mapeamento.<br><br>Por favor, comunique o líder do setor: <strong>kevenny.costa@totvs.com.br</strong></p>
+            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto, envie um e-mail para o líder do setor:<br><strong>kevenny.costa@totvs.com.br</strong></p>
             <div class="flex flex-col gap-2">
                 <button onclick="closeProjectModal('failure')" class="w-full inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
                     Ir para Dashboard
@@ -501,7 +502,7 @@
             
             setTimeout(() => {
                 modal.classList.replace('flex', 'hidden');
-                switchView('dashboard');
+                switchView('dashboard'); // Volta para o painel principal após criar
             }, 300);
         };
         
@@ -531,9 +532,18 @@
             }, 3000);
         };
 
+        // Tratamento de Erro Adicionado
+        function showError(message) {
+            const loadingMsg = document.getElementById('loadingProjectsMessage');
+            if(loadingMsg) {
+                loadingMsg.innerHTML = `<div class="text-red-500 py-4"><i class="fas fa-exclamation-triangle mr-2"></i> Erro: ${message}</div>`;
+            }
+        }
+
         async function initAuth() {
             try {
-                await signInAnonymously(auth);
+                // Removemos o signInAnonymously daqui, pois queremos logar explicitamente ou usar a regra aberta no Firestore
+                // await signInAnonymously(auth); 
                 const usersRef = collection(db, 'usuarios');
                 const usersSnap = await getDocs(usersRef);
                 if (usersSnap.empty) {
@@ -546,7 +556,7 @@
                     });
                 }
             } catch (error) {
-                console.error("Erro auth:", error);
+                console.error("Firebase init erro:", error);
             }
         }
 
@@ -599,7 +609,7 @@
             document.getElementById('btnOpenProject').classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
             document.getElementById('adminNavContainer').classList.toggle('hidden', currentRole !== 'Administrador');
 
-            loadProjects();
+            loadProjects(); // Aqui inicia o carregamento da lista
             if (currentRole === 'Administrador') loadUsers();
             
             switchView('dashboard');
@@ -647,7 +657,6 @@
         };
 
         function loadUsers() {
-            if(!auth.currentUser) return;
             const usersRef = collection(db, 'usuarios');
             
             onSnapshot(usersRef, (snapshot) => {
@@ -794,15 +803,22 @@
             }
         });
 
+        // Carrega projetos sem precisar de auth token complexo se as regras do Firestore estiverem corretas.
         function loadProjects() {
-            if(!auth.currentUser) return;
             const projectsRef = collection(db, 'projetos');
             
             onSnapshot(projectsRef, (snapshot) => {
                 allProjects = [];
                 snapshot.forEach(doc => allProjects.push({ id: doc.id, ...doc.data() }));
                 renderProjectsDashboard();
-            }, (error) => console.error("Erro snap projects:", error));
+            }, (error) => {
+                console.error("Erro snap projects:", error);
+                if (error.code === 'permission-denied') {
+                    showError("Acesso Negado (Permissões do Firebase). Por favor, publique as regras no console do Firestore.");
+                } else {
+                    showError("Falha na conexão com o banco de dados.");
+                }
+            });
         }
 
         function renderProjectsDashboard() {
@@ -818,7 +834,7 @@
             let countReady = 0;
 
             if (allProjects.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto encontrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto salvo.</td></tr>`;
                 sidebarList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>`;
                 sidebarFailedList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum mapeado</p>`;
                 document.getElementById('statTotal').textContent = '0';
@@ -928,7 +944,6 @@
         }
 
         window.salvarSecao1 = async function() {
-            // Força o navegador a mostrar o balão de "Preencha este campo" nos itens vazios
             const form = document.getElementById('projectForm');
             if(!form.checkValidity()) {
                 form.reportValidity();
@@ -977,7 +992,7 @@
                 }
             } catch (error) {
                 console.error("Erro abrir projeto:", error);
-                showToast("Erro ao abrir projeto", "error");
+                showToast("Erro ao salvar projeto no banco de dados.", "error");
             }
         }
 
