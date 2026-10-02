@@ -40,15 +40,33 @@
             <button onclick="closeModal('forgotPasswordModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Recuperar Senha</h3>
-            <p class="text-sm text-gray-600 mb-4">Digite seu e-mail corporativo para receber as instruções.</p>
-            <form id="forgotPasswordForm" class="flex flex-col gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                    <input type="email" id="forgotEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="seunome@totvs.com.br" required>
-                </div>
-                <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">Enviar Link</button>
-            </form>
+            
+            <!-- Step 1: E-mail Verification -->
+            <div id="verifyEmailForm">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Primeiro Acesso / Recuperação</h3>
+                <p class="text-sm text-gray-600 mb-4">Digite seu e-mail corporativo para verificar sua conta.</p>
+                <form class="flex flex-col gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input type="email" id="resetEmailInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="seunome@totvs.com.br" required>
+                    </div>
+                    <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">Verificar</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Define New Password -->
+            <div id="definePasswordForm" class="hidden">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Definir Senha</h3>
+                <p class="text-sm text-emerald-600 font-medium mb-4"><i class="fas fa-check-circle mr-1"></i> Conta localizada!</p>
+                <p class="text-sm text-gray-600 mb-4">Crie sua senha de acesso ao CRM.</p>
+                <form class="flex flex-col gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha</label>
+                        <input type="password" id="newPasswordInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required minlength="6">
+                    </div>
+                    <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">Salvar e Entrar</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -74,10 +92,6 @@
                     <input type="email" id="newUserEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha Inicial</label>
-                    <input type="text" id="newUserPassword" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required minlength="6">
-                </div>
-                <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Perfil de Acesso</label>
                     <select id="newUserRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
                         <option value="Hunter">Hunter</option>
@@ -87,9 +101,15 @@
                         <option value="Gerente">Gerente</option>
                     </select>
                 </div>
+                
+                <div class="bg-blue-50 p-3 rounded-lg flex gap-3 text-sm text-blue-800 mt-2">
+                    <i class="fas fa-info-circle mt-0.5"></i>
+                    <p>Ao criar a conta, avise o funcionário para acessar o sistema e clicar em <strong>"Primeiro Acesso"</strong> na tela de login para criar a senha dele.</p>
+                </div>
+
                 <div class="mt-2 flex justify-end gap-2">
                     <button type="button" onclick="closeModal('adminUserModal')" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg flex items-center gap-2"><i class="fas fa-save"></i> Criar Usuário</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg flex items-center gap-2"><i class="fas fa-save"></i> Criar Conta</button>
                 </div>
             </form>
         </div>
@@ -160,9 +180,21 @@
                     <i class="fas fa-columns w-5 text-center"></i> Dashboard
                 </button>
                 
+                <!-- Tópico PROJETOS -->
+                <div class="pt-6 pb-2">
+                    <div class="flex items-center justify-between px-3">
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Projetos</p>
+                        <i class="fas fa-folder-open text-gray-400 text-xs"></i>
+                    </div>
+                </div>
+                <div id="sidebarProjectsList" class="space-y-1 mb-4 flex flex-col gap-1">
+                    <!-- Projetos salvos aparecerão aqui automaticamente -->
+                    <p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>
+                </div>
+
                 <div id="adminNavContainer" class="hidden">
-                    <div class="pt-4 pb-1">
-                        <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Gestão</p>
+                    <div class="pt-4 pb-1 border-t border-gray-100">
+                        <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Gestão</p>
                     </div>
                     <button onclick="switchView('admin')" id="nav-admin" class="w-full flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors">
                         <i class="fas fa-users-cog w-5 text-center"></i> Painel Admin
@@ -194,9 +226,9 @@
                 <h1 class="text-2xl font-bold text-gray-800" id="viewTitle">Dashboard de Projetos</h1>
                 
                 <div id="headerActions">
-                    <!-- Botão Abertura Projeto (Visível apenas para Hunter/Admin) -->
+                    <!-- Botão Abertura Projeto -->
                     <button id="btnOpenProject" onclick="switchView('project-form')" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors items-center gap-2">
-                        <i class="fas fa-plus"></i> Abrir Projeto
+                        <i class="fas fa-plus"></i> Novo Projeto
                     </button>
                 </div>
             </header>
@@ -300,11 +332,6 @@
                                 <div class="bg-blue-100 p-2 rounded text-blue-600"><i class="fas fa-briefcase"></i></div>
                                 <h3 class="text-xl font-bold text-gray-800">Seção 1: Dados de Abertura</h3>
                             </div>
-                            
-                            <!-- Aviso de Bloqueio (Oculto por padrão) -->
-                            <div class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200 hidden" id="criterioWarning">
-                                <i class="fas fa-exclamation-triangle mr-2"></i><strong>Critério não atendido:</strong> O projeto só pode ser aberto se a rede possuir <strong>10 lojas ativas ou mais</strong> (Pergunta 3).
-                            </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
@@ -326,7 +353,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">3. Lojas ativas (Físicas/Dark Kitchen) *</label>
-                                    <input type="number" id="q3_lojas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                    <input type="number" id="q3_lojas" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">4. Início da Loja Piloto *</label>
@@ -366,8 +393,9 @@
                             </div>
                             
                             <div id="s1-actions" class="mt-8 flex justify-end">
-                                <button type="button" onclick="salvarSecao1()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2">
-                                    Abrir Projeto <i class="fas fa-check"></i>
+                                <!-- Botão agora com validação nativa ativada via JS -->
+                                <button type="button" onclick="salvarSecao1()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                                    Salvar Projeto <i class="fas fa-save"></i>
                                 </button>
                             </div>
                         </div>
@@ -379,7 +407,6 @@
     </div>
 
     <!-- Modais de Status do Projeto -->
-    <!-- Modal Sucesso -->
     <div id="projectSuccessModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[80]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] text-center relative transform transition-all scale-95 opacity-0 duration-300" id="projectSuccessModalContent">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 mb-4">
@@ -393,14 +420,13 @@
         </div>
     </div>
 
-    <!-- Modal Falha/Critério -->
     <div id="projectFailureModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[80]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-[400px] max-w-[90%] text-center relative transform transition-all scale-95 opacity-0 duration-300" id="projectFailureModalContent">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
                 <i class="fas fa-times text-2xl text-red-600"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">Critérios Não Atendidos</h3>
-            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios mínimos para ser um Projeto (menos de 10 lojas ativas).<br><br>Por favor, envie um e-mail para o líder do setor.</p>
+            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto (menos de 10 lojas ativas).<br><br>Por favor, envie um e-mail para o líder do setor.</p>
             <div class="flex flex-col gap-2">
                 <button onclick="window.location.href='mailto:projetos.food@totvs.com.br?subject=Apoio Comercial - Cliente Fora do Perfil'" class="w-full inline-flex justify-center items-center gap-2 rounded-lg border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 sm:text-sm">
                     <i class="fas fa-envelope"></i> Enviar E-mail
@@ -417,7 +443,6 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Your web app's Firebase configuration (Atualizado)
         const firebaseConfig = {
             apiKey: "AIzaSyAoimTUqH0Fy-vFHSRdX1Jps2qruR4_kN4",
             authDomain: "crm-projetos-food.firebaseapp.com",
@@ -437,7 +462,6 @@
             console.error("Firebase init erro:", e);
         }
 
-        // Global State
         let currentUser = null; 
         let currentRole = null; 
         let currentProjectId = null;
@@ -446,16 +470,13 @@
         let allUsers = [];
         let userToDeleteId = null;
 
-        // UI Helpers
         window.closeModal = (id) => document.getElementById(id).classList.replace('flex', 'hidden');
 
-        // Controles dos Novos Modais com Animação
         window.showProjectModal = (type) => {
             const modal = document.getElementById(type === 'success' ? 'projectSuccessModal' : 'projectFailureModal');
             const content = document.getElementById(type === 'success' ? 'projectSuccessModalContent' : 'projectFailureModalContent');
             
             modal.classList.replace('hidden', 'flex');
-            // Timeout para garantir que o display:flex foi aplicado antes de animar a opacidade/escala
             setTimeout(() => {
                 content.classList.remove('scale-95', 'opacity-0');
                 content.classList.add('scale-100', 'opacity-100');
@@ -474,7 +495,7 @@
                 if(type === 'success') {
                     switchView('dashboard');
                 }
-            }, 300); // Tempo da animação CSS
+            }, 300);
         };
         
         window.openResetPasswordModal = () => {
@@ -505,10 +526,7 @@
 
         async function initAuth() {
             try {
-                // Loga anonimamente no firebase auth para ter acesso ao DB
                 await signInAnonymously(auth);
-                
-                // Initialize default Master Admin if no users exist
                 const usersRef = collection(db, 'usuarios');
                 const usersSnap = await getDocs(usersRef);
                 if (usersSnap.empty) {
@@ -520,7 +538,6 @@
                         criadoEm: serverTimestamp()
                     });
                 }
-                
             } catch (error) {
                 console.error("Erro auth:", error);
             }
@@ -531,7 +548,6 @@
             const email = document.getElementById('loginEmail').value.trim().toLowerCase();
             const senha = document.getElementById('loginPassword').value;
 
-            // Check Master Admin fallback
             if (email === 'admin@totvs.com.br' && senha === 'admin123') {
                 processLogin({ id: 'master', nome: 'Admin Master', perfil: 'Administrador', email: email });
                 return;
@@ -564,7 +580,6 @@
             currentUser = user;
             currentRole = user.perfil;
             
-            // Update UI
             document.getElementById('loginScreen').classList.replace('flex', 'hidden');
             document.getElementById('appScreen').classList.replace('hidden', 'flex');
             
@@ -574,11 +589,9 @@
             const initials = user.nome.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
             document.getElementById('userInitials').textContent = initials;
 
-            // Adjust Permissions UI
             document.getElementById('btnOpenProject').classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
             document.getElementById('adminNavContainer').classList.toggle('hidden', currentRole !== 'Administrador');
 
-            // Load Data
             loadProjects();
             if (currentRole === 'Administrador') loadUsers();
             
@@ -595,7 +608,6 @@
         }
 
         window.switchView = function(viewId) {
-            // Update nav active state
             ['nav-dashboard', 'nav-admin'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) {
@@ -609,15 +621,12 @@
                 document.getElementById(`nav-${viewId}`).classList.remove('text-gray-600');
             }
 
-            // Hide all views
             ['view-dashboard', 'view-admin', 'view-project-form'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
 
-            // Show selected view
             document.getElementById(`view-${viewId}`).classList.remove('hidden');
 
-            // Set Title
             const titles = {
                 'dashboard': 'Dashboard de Projetos',
                 'admin': 'Painel Administrativo',
@@ -691,12 +700,11 @@
                     return;
                 }
 
-                // Cria o usuário com senha null, indicando que ele precisa configurar no primeiro acesso
                 await addDoc(collection(db, 'usuarios'), {
                     nome, email, perfil, senha: null, criadoEm: serverTimestamp()
                 });
 
-                showToast('Conta criada! Avise o funcionário para fazer o Primeiro Acesso na tela de login.');
+                showToast('Conta criada! Avise o funcionário para criar a senha dele no Primeiro Acesso.');
                 closeModal('adminUserModal');
                 document.getElementById('createUserForm').reset();
             } catch (error) {
@@ -713,7 +721,6 @@
 
         document.getElementById('confirmDeleteUserBtn').addEventListener('click', async () => {
             if (!userToDeleteId || currentRole !== 'Administrador') return;
-            
             try {
                 await deleteDoc(doc(db, 'usuarios', userToDeleteId));
                 showToast("Usuário excluído com sucesso!");
@@ -725,7 +732,6 @@
             }
         });
 
-        // Lógica de Primeiro Acesso / Recuperação de Senha
         let userToResetId = null;
 
         document.getElementById('verifyEmailForm').addEventListener('submit', async (e) => {
@@ -770,7 +776,6 @@
                 showToast('Senha configurada com sucesso! Você já pode fazer login.');
                 closeModal('forgotPasswordModal');
                 
-                // Preenche o login automaticamente
                 document.getElementById('loginEmail').value = document.getElementById('resetEmailInput').value;
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginPassword').focus();
@@ -795,20 +800,23 @@
 
         function renderProjectsDashboard() {
             const tbody = document.getElementById('projectsTableBody');
+            const sidebarList = document.getElementById('sidebarProjectsList');
+            
             tbody.innerHTML = '';
+            sidebarList.innerHTML = '';
             
             let countPending = 0;
             let countReady = 0;
 
             if (allProjects.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto encontrado.</td></tr>`;
+                sidebarList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>`;
                 document.getElementById('statTotal').textContent = '0';
                 document.getElementById('statPending').textContent = '0';
                 document.getElementById('statReady').textContent = '0';
                 return;
             }
 
-            // Sort by date desc
             const sortedProjects = [...allProjects].sort((a, b) => {
                 const dateA = a.criadoEm ? (a.criadoEm.toDate ? a.criadoEm.toDate() : new Date(a.criadoEm)) : new Date(0);
                 const dateB = b.criadoEm ? (b.criadoEm.toDate ? b.criadoEm.toDate() : new Date(b.criadoEm)) : new Date(0);
@@ -824,6 +832,7 @@
                 else if(p.status === 'Pronto para Início') statusBadge = 'bg-emerald-100 text-emerald-700 border-emerald-200';
                 else statusBadge = 'bg-blue-100 text-blue-700 border-blue-200';
 
+                // Injetar na Tabela Principal
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-gray-50 transition-colors cursor-pointer group';
                 tr.onclick = () => openProjectDetails(p);
@@ -838,6 +847,13 @@
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // Injetar no Menu Lateral (Projetos)
+                const sideBtn = document.createElement('button');
+                sideBtn.onclick = () => openProjectDetails(p);
+                sideBtn.className = 'w-full text-left truncate px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors flex items-center gap-2';
+                sideBtn.innerHTML = `<i class="fas fa-file-signature text-gray-400 text-xs"></i><span class="truncate">${p.nome}</span>`;
+                sidebarList.appendChild(sideBtn);
             });
 
             document.getElementById('statTotal').textContent = allProjects.length;
@@ -850,20 +866,9 @@
             currentProjectData = null;
             document.getElementById('projectForm').reset();
             
-            const aviso = document.getElementById('criterioWarning');
-            if(aviso) aviso.classList.add('hidden');
-            
-            // Lock UI for new project
             habilitarCampos('s1-field', true);
             document.getElementById('s1-actions').classList.remove('hidden');
             
-            // Hide other sections
-            [2, 3, 4].forEach(n => {
-                const sec = document.getElementById(`section${n}`);
-                sec.classList.add('hidden');
-                sec.classList.add('opacity-50', 'pointer-events-none');
-            });
-
             document.getElementById('formProgressText').textContent = 'Seção 1 de 4 (Abertura)';
             document.getElementById('formProgressBar').style.width = '25%';
             document.getElementById('formStatusBadge').textContent = 'Status: Em Criação';
@@ -873,7 +878,6 @@
             currentProjectId = project.id;
             currentProjectData = project;
             
-            // Fill Form
             document.getElementById('q1_marca').value = project.q1_marca || project.nome || '';
             document.getElementById('q2_solucao').value = project.q2_solucao || '';
             document.getElementById('q3_lojas').value = project.q3_lojas || '';
@@ -885,40 +889,11 @@
             document.getElementById('q9_aceite').value = project.q9_aceite || '';
             document.getElementById('q10_inegociavel').value = project.q10_inegociavel || '';
             
-            // Secao 2 (se houver)
-            if(document.getElementById('p_arquitetura')) document.getElementById('p_arquitetura').value = project.arquitetura || '';
-            if(document.getElementById('p_horas_previstas')) document.getElementById('p_horas_previstas').value = project.horas_previstas || '';
-
-            // Setup UI based on Role and Status
             document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
             
-            // Section 1 is always locked after creation
             habilitarCampos('s1-field', false);
             document.getElementById('s1-actions').classList.add('hidden');
             
-            // Logic for Pre-sales
-            if (project.status === 'Aguardando Pré-vendas') {
-                if (['Pré Vendas', 'Administrador'].includes(currentRole)) {
-                    // Unlock S2
-                    document.getElementById('section2').classList.remove('hidden', 'opacity-50', 'pointer-events-none');
-                    document.getElementById('formProgressText').textContent = 'Seção 2: Especificações';
-                    document.getElementById('formProgressBar').style.width = '50%';
-                } else {
-                    document.getElementById('section2').classList.remove('hidden');
-                    document.getElementById('section2').classList.add('opacity-50', 'pointer-events-none');
-                    document.getElementById('s2-actions').classList.add('hidden');
-                }
-            } else if (project.status === 'Pronto para Início') {
-                // Show all sections, but locked
-                 [2,3,4].forEach(n => {
-                    const sec = document.getElementById(`section${n}`);
-                    sec.classList.remove('hidden');
-                    sec.classList.add('opacity-50', 'pointer-events-none');
-                 });
-                 document.getElementById('s4-actions').classList.add('hidden');
-                 document.getElementById('formProgressBar').style.width = '100%';
-            }
-
             switchView('project-form');
         }
 
@@ -931,6 +906,13 @@
         }
 
         window.salvarSecao1 = async function() {
+            // Força o navegador a mostrar o balão de "Preencha este campo" nos itens vazios
+            const form = document.getElementById('projectForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
             const q1 = document.getElementById('q1_marca').value.trim();
             const q2 = document.getElementById('q2_solucao').value;
             const q3 = document.getElementById('q3_lojas').value;
@@ -942,17 +924,7 @@
             const q9 = document.getElementById('q9_aceite').value.trim();
             const q10 = document.getElementById('q10_inegociavel').value.trim();
 
-            if(!q1 || !q2 || !q3 || !q4 || !q5 || !q6 || !q7 || !q8 || !q9 || !q10) {
-                showToast("Preencha todas as 10 perguntas obrigatórias (*)", "error");
-                return;
-            }
-
-            // Critério de Bloqueio (Lojas < 10) agora exibe o Modal
             if(parseInt(q3) < 10) {
-                // Esconde o aviso amarelo antigo (se ainda estiver no HTML)
-                const avisoAntigo = document.getElementById('criterioWarning');
-                if(avisoAntigo) avisoAntigo.classList.add('hidden');
-                
                 showProjectModal('failure');
                 return;
             }
@@ -977,7 +949,6 @@
                 };
 
                 await addDoc(collection(db, 'projetos'), projectData);
-                // Substitui o toast de sucesso pelo Modal de Sucesso
                 showProjectModal('success');
             } catch (error) {
                 console.error("Erro abrir projeto:", error);
@@ -985,47 +956,6 @@
             }
         }
 
-        // Navigation between sections for Pre-sales
-        window.avancarParaSecao = function(secaoNum) {
-            document.getElementById(`section${secaoNum-1}`).classList.add('hidden');
-            const sec = document.getElementById(`section${secaoNum}`);
-            sec.classList.remove('hidden', 'opacity-50', 'pointer-events-none');
-            
-            document.getElementById('formProgressText').textContent = `Seção ${secaoNum} de 4`;
-            document.getElementById('formProgressBar').style.width = `${secaoNum * 25}%`;
-            window.scrollTo(0,0);
-        }
-
-        window.voltarParaSecao = function(secaoNum) {
-            document.getElementById(`section${secaoNum+1}`).classList.add('hidden');
-            document.getElementById(`section${secaoNum}`).classList.remove('hidden');
-            
-            document.getElementById('formProgressText').textContent = `Seção ${secaoNum} de 4`;
-            document.getElementById('formProgressBar').style.width = `${secaoNum * 25}%`;
-        }
-
-        window.finalizarPreVendas = async function() {
-            if(!currentProjectId) return;
-            
-            try {
-                const updateData = {
-                    arquitetura: document.getElementById('p_arquitetura').value,
-                    horas_previstas: document.getElementById('p_horas_previstas').value,
-                    status: 'Pronto para Início',
-                    preVendasPor: currentUser.nome,
-                    dataPreVendas: serverTimestamp()
-                };
-
-                await updateDoc(doc(db, 'projetos', currentProjectId), updateData);
-                showToast("Pré-vendas concluído! Projeto pronto para início.");
-                switchView('dashboard');
-            } catch (error) {
-                console.error("Erro finalizar:", error);
-                showToast("Erro ao finalizar", "error");
-            }
-        }
-
-        // Start App
         window.onload = initAuth;
 
     </script>
