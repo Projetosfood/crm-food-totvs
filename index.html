@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOTVS - Projetos Food</title>
+    <title>Projetos Food</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -176,9 +176,11 @@
     <div id="loginScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-[400px] max-w-[90%] text-center">
             <div class="mb-6 flex justify-center">
-                <img src="totvs.png" onerror="this.src='https://placehold.co/120x60/0ea5e9/ffffff?text=TOTVS'" alt="TOTVS Logo" class="h-16 w-auto object-contain mx-auto">
+                <!-- Alterado logo e tamanho do login -->
+                <img src="totvs.png" alt="TOTVS Logo" class="h-24 w-auto object-contain mx-auto" onerror="this.src='https://placehold.co/120x60/0ea5e9/ffffff?text=TOTVS'">
             </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">TOTVS - Projetos Food</h2>
+            <!-- Removido o subtitulo -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Projetos Food</h2>
 
             <form id="loginForm" class="text-left space-y-4">
                 <div>
@@ -204,8 +206,9 @@
         <div class="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm flex-shrink-0">
             <div class="p-4 border-b border-gray-200">
                 <div class="flex items-center gap-3">
-                    <img src="totvs.png" onerror="this.src='https://placehold.co/60x20/0ea5e9/ffffff?text=TOTVS'" alt="TOTVS Logo" class="h-6 w-auto object-contain">
-                    <span class="font-bold text-lg text-gray-800">TOTVS - Projetos Food</span>
+                    <!-- Alterado logo, tamanho e título na sidebar -->
+                    <img src="totvs.png" alt="TOTVS Logo" class="h-8 w-auto object-contain" onerror="this.src='https://placehold.co/60x20/0ea5e9/ffffff?text=TOTVS'">
+                    <span class="font-bold text-lg text-gray-800">Projetos Food</span>
                 </div>
             </div>
 
@@ -269,7 +272,6 @@
                 </div>
             </header>
 
-            <!-- View: Dashboard -->
             <main id="view-dashboard" class="flex-1 overflow-auto p-6 bg-gray-50/50">
                 <div id="connectionErrorBanner" class="hidden mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm">
                     <div class="flex items-start">
@@ -321,7 +323,6 @@
                 </div>
             </main>
 
-            <!-- View: Admin Panel -->
             <main id="view-admin" class="hidden flex-1 overflow-auto p-6 bg-gray-50/50">
                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
@@ -369,7 +370,6 @@
 
                     <form id="projectForm" class="p-8">
                         
-                        <!-- SECTION 1: Abertura (Comercial) -->
                         <div id="section1" class="form-section">
                             <div class="flex items-center gap-3 mb-6 pb-2 border-b">
                                 <div class="bg-blue-100 p-2 rounded text-blue-600"><i class="fas fa-briefcase"></i></div>
@@ -712,7 +712,10 @@
             document.getElementById('userRoleDisplay').textContent = user.perfil;
             document.getElementById('userInitials').textContent = user.nome.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
 
-            document.getElementById('btnOpenProject').classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
+            // Ajuste aqui para garantir que esconde o botão se não estiver no dashboard
+            const isDashboard = !document.getElementById('view-dashboard').classList.contains('hidden');
+            document.getElementById('btnOpenProject').classList.toggle('hidden', !(isDashboard && ['Hunter', 'Administrador'].includes(currentRole)));
+            
             document.getElementById('adminNavContainer').classList.toggle('hidden', currentRole !== 'Administrador');
 
             loadProjects(); 
@@ -992,6 +995,7 @@
                 showToast("Projeto excluído com sucesso!");
                 closeModal('deleteProjectModal');
                 projectToDeleteId = null;
+                switchView('dashboard'); // Volta pro dashboard caso tenha excluido por dentro do projeto
             } catch (error) { showToast("Erro ao excluir projeto.", "error"); }
         });
 
