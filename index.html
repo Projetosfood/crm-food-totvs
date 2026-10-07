@@ -755,6 +755,14 @@
             };
             document.getElementById('viewTitle').textContent = titles[viewId];
 
+            // Esconde ou exibe o botão "Novo Projeto" dependendo da tela atual e do perfil do usuário
+            const btnOpenProject = document.getElementById('btnOpenProject');
+            if (viewId === 'dashboard') {
+                btnOpenProject.classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
+            } else {
+                btnOpenProject.classList.add('hidden');
+            }
+
             if (viewId === 'project-form' && !currentProjectId) resetForm();
         };
 
