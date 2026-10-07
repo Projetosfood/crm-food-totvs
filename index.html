@@ -6,7 +6,6 @@
     <title>Projetos Food</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Adicionando Chart.js para os gráficos de Rollout -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -30,7 +29,6 @@
         .toast-enter { animation: slideIn 0.3s ease-out forwards; }
         .toast-exit { animation: slideOut 0.3s ease-in forwards; }
 
-        /* Estilo para centralizar texto no gráfico de rosca */
         .chart-container-relative {
             position: relative;
             height: 250px;
@@ -282,9 +280,13 @@
         </div>
 
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <!-- Cabeçalho Global -->
             <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0 h-[73px]">
-                <h1 class="text-2xl font-bold text-gray-800" id="viewTitle">Dashboard de Projetos</h1>
-                <div id="headerActions">
+                <div class="flex items-center gap-4 overflow-hidden flex-1">
+                    <h1 class="text-2xl font-bold text-gray-800 truncate" id="viewTitle">Dashboard de Projetos</h1>
+                    <span id="headerStatusBadge" class="hidden px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap">Status: Em Criação</span>
+                </div>
+                <div id="headerActions" class="shrink-0 pl-4">
                     <button id="btnOpenProject" onclick="abrirNovoProjeto()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2 hidden">
                         <i class="fas fa-plus"></i> Novo Projeto
                     </button>
@@ -372,22 +374,87 @@
             <main id="view-project-form" class="hidden flex-1 overflow-auto p-6 bg-gray-50/50">
                 <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
                     
-                    <!-- Cabeçalho do Projeto com Abas -->
-                    <div class="bg-white border-b border-gray-200 flex flex-col">
-                        <div class="p-6 pb-4 flex justify-between items-start">
-                            <div class="flex-1 overflow-hidden">
-                                <h2 class="text-3xl font-bold text-gray-800 pr-4 truncate" id="formMainTitle">Abertura de Projeto</h2>
+                    <!-- GRÁFICOS DO ROLLOUT (Sempre visíveis no topo quando não é novo projeto) -->
+                    <div id="rolloutDashboardArea" class="hidden p-6 pb-4 bg-gray-50/50 border-b border-gray-200">
+                        <!-- KPI Cards -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-blue-600 p-4 shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Total</p>
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs"><i class="fas fa-store"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">6</h4>
+                                <p class="text-[10px] text-gray-400 mt-1">Escopo total</p>
                             </div>
-                            <div class="shrink-0 pt-1">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap" id="formStatusBadge">Status: Em Criação</span>
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-purple-500 p-4 shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Nova Loja</p>
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center text-xs"><i class="fas fa-star"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">1</h4>
+                                <p class="text-[10px] text-gray-400 mt-1">Recém cadastradas</p>
+                            </div>
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-yellow-400 p-4 shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Qualificando</p>
+                                    <div class="w-6 h-6 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center text-xs"><i class="fas fa-spinner"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">0</h4>
+                                <p class="text-[10px] text-gray-400 mt-1">Em Fila / Preparação</p>
+                            </div>
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-blue-400 p-4 shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Agendado</p>
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-400 flex items-center justify-center text-xs"><i class="fas fa-calendar-check"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">0</h4>
+                                <p class="text-[10px] text-gray-400 mt-1">Pronto para iniciar</p>
+                            </div>
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-emerald-500 p-4 shadow-sm flex flex-col justify-between relative">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Implantado</p>
+                                    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center text-xs"><i class="fas fa-check-circle"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">3</h4>
+                                <div class="w-full bg-gray-100 h-1.5 mt-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-red-400 p-4 shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Bloqueado</p>
+                                    <div class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xs"><i class="fas fa-ban"></i></div>
+                                </div>
+                                <h4 class="text-2xl font-bold text-gray-800">2</h4>
+                                <p class="text-[10px] text-red-500 mt-1 font-medium">Atenção requerida</p>
                             </div>
                         </div>
+
+                        <!-- Charts Area -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm lg:col-span-2">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6">Progresso do Rollout (Burnup)</h3>
+                                <div class="w-full h-64">
+                                    <canvas id="burnupChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6">Status Atual</h3>
+                                <div class="chart-container-relative flex justify-center items-center">
+                                    <canvas id="donutChart"></canvas>
+                                    <div class="chart-center-text pointer-events-none mt-4">
+                                        <h4 class="text-3xl font-bold text-gray-800">50%</h4>
+                                        <p class="text-xs text-gray-500">Concluído</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         
-                        <div id="projectTabs" class="hidden px-6 flex gap-8 border-t border-gray-100 pt-2 bg-gray-50">
-                            <button type="button" onclick="switchProjectTab('documentacao')" id="tab-btn-documentacao" class="pb-3 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-colors uppercase tracking-wide">Documentação</button>
-                            <button type="button" onclick="switchProjectTab('cronograma')" id="tab-btn-cronograma" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 font-medium text-sm transition-colors uppercase tracking-wide">Cronograma do Projeto</button>
-                            <button type="button" onclick="switchProjectTab('rollout')" id="tab-btn-rollout" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 font-medium text-sm transition-colors uppercase tracking-wide">Rollout do Projeto</button>
-                        </div>
+                    <!-- ABAS -->
+                    <div id="projectTabs" class="hidden px-6 flex gap-8 border-b border-gray-100 pt-4 bg-white">
+                        <button type="button" onclick="switchProjectTab('documentacao')" id="tab-btn-documentacao" class="pb-3 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-colors uppercase tracking-wide">Documentação</button>
+                        <button type="button" onclick="switchProjectTab('cronograma')" id="tab-btn-cronograma" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 font-medium text-sm transition-colors uppercase tracking-wide">Cronograma do Projeto</button>
                     </div>
 
                     <!-- Conteúdo Aba: Documentação -->
@@ -405,7 +472,7 @@
                         <form id="projectForm">
                             <div id="section1" class="form-section">
                                 
-                                <!-- BLOCO 1: TERMO DE ABERTURA (Acordeão) -->
+                                <!-- BLOCO 1: TERMO DE ABERTURA -->
                                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
                                     <div class="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors" onclick="toggleAccordion('bloco-termo', 'icon-termo')">
                                         <div class="flex items-center gap-3">
@@ -477,12 +544,14 @@
                                     </div>
                                 </div>
 
-                                <!-- BLOCO 2: CLASSIFICAÇÃO (Acordeão) -->
+                                <!-- BLOCO 2: CLASSIFICAÇÃO -->
                                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
                                     <div class="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors" onclick="toggleAccordion('bloco-classificacao', 'icon-classificacao')">
                                         <div class="flex items-center gap-3">
                                             <div class="bg-indigo-100 p-2 rounded text-indigo-600"><i class="fas fa-tags"></i></div>
-                                            <h3 class="text-lg font-bold text-gray-800">Classificação do Cliente</h3>
+                                            <div>
+                                                <h3 class="text-lg font-bold text-gray-800">Classificação do Cliente</h3>
+                                            </div>
                                         </div>
                                         <i id="icon-classificacao" class="fas fa-chevron-up text-gray-500 transform transition-transform duration-300"></i>
                                     </div>
@@ -515,7 +584,7 @@
                             </div>
 
                             <div id="section2_prevendas" class="hidden form-section mt-8">
-                                <!-- BLOCO 3: MAPEAMENTO DE NEGÓCIO (Acordeão) -->
+                                <!-- BLOCO 3: MAPEAMENTO DE NEGÓCIO -->
                                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
                                     <div class="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors" onclick="toggleAccordion('bloco-mapeamento', 'icon-mapeamento')">
                                         <div class="flex items-center gap-3">
@@ -560,96 +629,6 @@
                         </div>
                     </div>
 
-                    <!-- Conteúdo Aba: Rollout -->
-                    <div id="tab-content-rollout" class="hidden p-8 bg-gray-50/30">
-                        
-                        <!-- KPI Cards -->
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-                            <!-- Card: Total -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-blue-600 p-4 shadow-sm flex flex-col justify-between">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Total</p>
-                                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs"><i class="fas fa-store"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">6</h4>
-                                <p class="text-[10px] text-gray-400 mt-1">Escopo total</p>
-                            </div>
-                            <!-- Card: Nova Loja -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-purple-500 p-4 shadow-sm flex flex-col justify-between">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Nova Loja</p>
-                                    <div class="w-6 h-6 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center text-xs"><i class="fas fa-star"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">1</h4>
-                                <p class="text-[10px] text-gray-400 mt-1">Recém cadastradas</p>
-                            </div>
-                            <!-- Card: Qualificando -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-yellow-400 p-4 shadow-sm flex flex-col justify-between">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Qualificando</p>
-                                    <div class="w-6 h-6 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center text-xs"><i class="fas fa-spinner"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">0</h4>
-                                <p class="text-[10px] text-gray-400 mt-1">Em Fila / Preparação</p>
-                            </div>
-                            <!-- Card: Agendado -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-blue-400 p-4 shadow-sm flex flex-col justify-between">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Agendado</p>
-                                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-400 flex items-center justify-center text-xs"><i class="fas fa-calendar-check"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">0</h4>
-                                <p class="text-[10px] text-gray-400 mt-1">Pronto para iniciar</p>
-                            </div>
-                            <!-- Card: Implantado -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-emerald-500 p-4 shadow-sm flex flex-col justify-between relative">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Implantado</p>
-                                    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center text-xs"><i class="fas fa-check-circle"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">3</h4>
-                                <div class="w-full bg-gray-100 h-1.5 mt-2 rounded-full overflow-hidden">
-                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 50%;"></div>
-                                </div>
-                            </div>
-                            <!-- Card: Bloqueado -->
-                            <div class="bg-white rounded-xl border border-gray-200 border-l-4 border-l-red-400 p-4 shadow-sm flex flex-col justify-between">
-                                <div class="flex justify-between items-start mb-2">
-                                    <p class="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Bloqueado</p>
-                                    <div class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xs"><i class="fas fa-ban"></i></div>
-                                </div>
-                                <h4 class="text-2xl font-bold text-gray-800">2</h4>
-                                <p class="text-[10px] text-red-500 mt-1 font-medium">Atenção requerida</p>
-                            </div>
-                        </div>
-
-                        <!-- Charts Area -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            
-                            <!-- Burnup Chart -->
-                            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm lg:col-span-2">
-                                <h3 class="text-lg font-bold text-gray-800 mb-6">Progresso do Rollout (Burnup)</h3>
-                                <div class="w-full h-64">
-                                    <canvas id="burnupChart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Donut Chart -->
-                            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                                <h3 class="text-lg font-bold text-gray-800 mb-6">Status Atual</h3>
-                                <div class="chart-container-relative flex justify-center items-center">
-                                    <canvas id="donutChart"></canvas>
-                                    <div class="chart-center-text pointer-events-none mt-4">
-                                        <h4 class="text-3xl font-bold text-gray-800">50%</h4>
-                                        <p class="text-xs text-gray-500">Concluído</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
                 </div>
             </main>
         </div>
@@ -688,7 +667,6 @@
         let projectToDeleteId = null;
         let unsubscribeProjects = null;
         
-        // Variáveis globais para instâncias dos gráficos
         let burnupChartInstance = null;
         let donutChartInstance = null;
 
@@ -919,14 +897,12 @@
         }
 
         function renderRolloutCharts() {
-            // Destrói os gráficos antigos caso existam para evitar sobreposição
             if (burnupChartInstance) burnupChartInstance.destroy();
             if (donutChartInstance) donutChartInstance.destroy();
 
             const burnupCtx = document.getElementById('burnupChart').getContext('2d');
             const donutCtx = document.getElementById('donutChart').getContext('2d');
 
-            // Configuração do Gráfico Burnup (Linha + Área)
             burnupChartInstance = new Chart(burnupCtx, {
                 type: 'line',
                 data: {
@@ -935,7 +911,7 @@
                         {
                             label: 'Lojas Implantadas',
                             data: [0, 0, 1, 1, 2, 3],
-                            borderColor: '#0ea5e9', // bg-blue-500 tailwind
+                            borderColor: '#0ea5e9',
                             backgroundColor: 'rgba(14, 165, 233, 0.1)',
                             borderWidth: 3,
                             fill: true,
@@ -946,7 +922,7 @@
                         {
                             label: 'Escopo Total (Lojas)',
                             data: [6, 6, 6, 6, 6, 6],
-                            borderColor: '#9ca3af', // bg-gray-400
+                            borderColor: '#9ca3af',
                             borderWidth: 2,
                             borderDash: [5, 5],
                             fill: false,
@@ -959,52 +935,23 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 7,
-                            ticks: { stepSize: 1, color: '#6b7280' },
-                            grid: { color: '#f3f4f6' }
-                        },
-                        x: {
-                            ticks: { color: '#6b7280' },
-                            grid: { display: false }
-                        }
+                        y: { beginAtZero: true, max: 7, ticks: { stepSize: 1, color: '#6b7280' }, grid: { color: '#f3f4f6' } },
+                        x: { ticks: { color: '#6b7280' }, grid: { display: false } }
                     },
                     plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                usePointStyle: true,
-                                boxWidth: 8,
-                                padding: 20,
-                                color: '#4b5563',
-                                font: { family: 'Inter', size: 12 }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#1f2937',
-                            padding: 10,
-                            titleFont: { family: 'Inter', size: 13 },
-                            bodyFont: { family: 'Inter', size: 13 }
-                        }
+                        legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, padding: 20, color: '#4b5563', font: { family: 'Inter', size: 12 } } },
+                        tooltip: { backgroundColor: '#1f2937', padding: 10, titleFont: { family: 'Inter', size: 13 }, bodyFont: { family: 'Inter', size: 13 } }
                     }
                 }
             });
 
-            // Configuração do Gráfico de Rosca (Status)
             donutChartInstance = new Chart(donutCtx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Nova Loja', 'Qualificando', 'Agendado', 'Implantado', 'Bloqueado'],
                     datasets: [{
                         data: [1, 0, 0, 3, 2],
-                        backgroundColor: [
-                            '#a855f7', // purple-500
-                            '#facc15', // yellow-400
-                            '#60a5fa', // blue-400
-                            '#10b981', // emerald-500
-                            '#f87171'  // red-400
-                        ],
+                        backgroundColor: ['#a855f7', '#facc15', '#60a5fa', '#10b981', '#f87171'],
                         borderWidth: 0,
                         hoverOffset: 4
                     }]
@@ -1012,18 +959,9 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '75%', // Define a espessura da rosca
+                    cutout: '75%',
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                boxWidth: 8,
-                                padding: 15,
-                                color: '#6b7280',
-                                font: { family: 'Inter', size: 11 }
-                            }
-                        }
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 15, color: '#6b7280', font: { family: 'Inter', size: 11 } } }
                     },
                     layout: { padding: { top: 10, bottom: 10 } }
                 }
@@ -1031,7 +969,7 @@
         }
 
         window.switchProjectTab = function(tabId) {
-            const tabs = ['documentacao', 'cronograma', 'rollout'];
+            const tabs = ['documentacao', 'cronograma'];
             tabs.forEach(id => {
                 const btn = document.getElementById(`tab-btn-${id}`);
                 const content = document.getElementById(`tab-content-${id}`);
@@ -1046,13 +984,6 @@
                     content.classList.add('hidden');
                 }
             });
-
-            // Se a aba Rollout for clicada, renderiza os gráficos após um pequeno delay para garantir que a div está visível
-            if (tabId === 'rollout') {
-                setTimeout(() => {
-                    renderRolloutCharts();
-                }, 50);
-            }
         };
 
         window.abrirNovoProjeto = function() {
@@ -1081,15 +1012,18 @@
             document.getElementById(`view-${viewId}`).classList.remove('hidden');
 
             const btnOpenProject = document.getElementById('btnOpenProject');
+            const headerBadge = document.getElementById('headerStatusBadge');
             
             if (viewId === 'dashboard') {
                 document.getElementById('viewTitle').textContent = 'Dashboard de Projetos';
+                headerBadge.classList.add('hidden');
                 btnOpenProject.classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
             } else if (viewId === 'admin') {
                 document.getElementById('viewTitle').textContent = 'Painel Administrativo';
+                headerBadge.classList.add('hidden');
                 btnOpenProject.classList.add('hidden');
             } else if (viewId === 'project-form') {
-                document.getElementById('viewTitle').textContent = 'Detalhes do Projeto';
+                // Título e Badge são controlados pelo resetForm ou openProjectDetails
                 btnOpenProject.classList.add('hidden');
             }
         };
@@ -1329,22 +1263,28 @@
             currentProjectId = null;
             document.getElementById('projectForm').reset(); 
             
-            document.getElementById('formMainTitle').textContent = 'Abertura de Projeto';
-            document.getElementById('formStatusBadge').textContent = 'Status: Em Criação';
-            document.getElementById('formStatusBadge').className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap';
+            // Cabeçalho Global
+            document.getElementById('viewTitle').textContent = 'Abertura de Projeto';
+            const badge = document.getElementById('headerStatusBadge');
+            badge.textContent = 'Status: Em Criação';
+            badge.className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap';
+            badge.classList.remove('hidden');
             
+            // Esconder elementos de projetos já salvos
+            document.getElementById('rolloutDashboardArea').classList.add('hidden');
             document.getElementById('projectTabs').classList.add('hidden');
+            document.getElementById('preVendasBanner').classList.add('hidden');
+            document.getElementById('section2_prevendas').classList.add('hidden');
+            
+            // Exibir botões do comercial
+            document.getElementById('s1-actions').classList.remove('hidden');
+
             switchProjectTab('documentacao');
             resetAccordions();
             
             habilitarCampos('s1-field', true);
             habilitarCampos('s1-optional-field', true);
-            
-            habilitarCampos('s2-field', false);
-            
-            document.getElementById('s1-actions').classList.remove('hidden');
-            document.getElementById('preVendasBanner').classList.add('hidden');
-            document.getElementById('section2_prevendas').classList.add('hidden');
+            habilitarCampos('s2-field', false); // Desativa para não bloquear o Salvar da Parte 1
         }
 
         window.openProjectDetails = function(project) {
@@ -1363,15 +1303,21 @@
                 if(el) el.value = project[`q_class_${i}`] || '';
             }
             
-            document.getElementById('formMainTitle').textContent = project.nome;
-            document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
+            // Cabeçalho Global
+            document.getElementById('viewTitle').textContent = project.nome;
+            const badge = document.getElementById('headerStatusBadge');
+            badge.textContent = `Status: ${project.status}`;
             
             let badgeColor = project.status === 'Aguardando Pré-vendas' ? 'bg-amber-100 text-amber-700 border-amber-200' :
                              project.status === 'Pronto para Início' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
                              project.status === 'Fora do Perfil' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-blue-100 text-blue-700 border-blue-200';
-            document.getElementById('formStatusBadge').className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor} whitespace-nowrap`;
+            badge.className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor} whitespace-nowrap`;
+            badge.classList.remove('hidden');
             
+            // Exibir elementos de projetos já salvos
+            document.getElementById('rolloutDashboardArea').classList.remove('hidden');
             document.getElementById('projectTabs').classList.remove('hidden');
+            
             switchProjectTab('documentacao');
             
             habilitarCampos('s1-field', false);
@@ -1402,6 +1348,11 @@
             }
             
             switchView('project-form');
+
+            // Renderiza os gráficos logo após a tela ficar visível
+            setTimeout(() => {
+                renderRolloutCharts();
+            }, 50);
         }
 
         window.iniciarPreVendas = function() {
