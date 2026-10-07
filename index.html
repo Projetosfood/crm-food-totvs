@@ -150,6 +150,7 @@
         </div>
     </div>
 
+    <!-- Modais de Sucesso/Falha no Projeto -->
     <div id="projectSuccessModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[80]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] text-center relative transform transition-all scale-95 opacity-0 duration-300" id="projectSuccessModalContent">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 mb-4">
@@ -176,6 +177,7 @@
         </div>
     </div>
 
+    <!-- Login Screen -->
     <div id="loginScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-[400px] max-w-[90%] text-center">
             <div class="mb-6 flex justify-center">
@@ -202,6 +204,7 @@
         </div>
     </div>
 
+    <!-- Main App Screen -->
     <div id="appScreen" class="hidden w-full h-full flex-col md:flex-row bg-gray-50">
         <!-- Sidebar -->
         <div class="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm flex-shrink-0">
@@ -302,14 +305,14 @@
 
                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
-                        <h2 class="text-lg font-semibold text-gray-800">Projetos Recentes</h2>
+                        <h2 class="text-lg font-semibold text-gray-800">Projetos</h2>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-white border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500 font-semibold">
-                                    <th class="px-6 py-4">Nome do Projeto</th>
                                     <th class="px-6 py-4">Cliente</th>
+                                    <th class="px-6 py-4">Natureza da Operação</th>
                                     <th class="px-6 py-4">Status</th>
                                     <th class="px-6 py-4">Criado em</th>
                                     <th class="px-6 py-4 text-right">Ação</th>
@@ -785,7 +788,6 @@
         };
 
         window.abrirNovoProjeto = function() {
-            currentProjectId = null;
             resetForm();
             switchView('project-form');
         };
@@ -999,8 +1001,8 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-gray-50 transition-colors group cursor-pointer';
                 tr.innerHTML = `
-                    <td class="px-6 py-4 open-details-btn"><p class="text-sm font-semibold text-gray-900 group-hover:text-blue-600">${p.nome}</p></td>
-                    <td class="px-6 py-4 text-sm text-gray-600 open-details-btn">${p.cliente}</td>
+                    <td class="px-6 py-4 open-details-btn"><p class="text-sm font-semibold text-gray-900 group-hover:text-blue-600">${p.cliente}</p></td>
+                    <td class="px-6 py-4 text-sm text-gray-600 open-details-btn">${p.q2_solucao || 'N/A'}</td>
                     <td class="px-6 py-4 open-details-btn"><span class="px-2.5 py-1 rounded-full text-xs font-medium border ${statusBadge}">${p.status}</span></td>
                     <td class="px-6 py-4 text-sm text-gray-500 open-details-btn">${p.criadoEm ? new Date(p.criadoEm.toDate ? p.criadoEm.toDate() : p.criadoEm).toLocaleDateString('pt-BR') : 'N/A'}</td>
                     <td class="px-6 py-4 text-right whitespace-nowrap">
@@ -1061,7 +1063,10 @@
             
             habilitarCampos('s1-field', true);
             habilitarCampos('s1-optional-field', true);
-            habilitarCampos('s2-field', false); // Desativa as perguntas do pré-vendas para não bloquear a criação do projeto
+            
+            // Desativa temporariamente os campos de pré-vendas para não bloquear a validação HTML5 do formulário 1
+            habilitarCampos('s2-field', false);
+            
             document.getElementById('s1-actions').classList.remove('hidden');
             
             document.getElementById('formMainTitle').textContent = 'Abertura de Projeto';
@@ -1150,7 +1155,7 @@
 
         document.getElementById('projectForm').addEventListener('submit', async function(e) {
             e.preventDefault(); 
-            if(currentProjectId) return;
+            if(currentProjectId) return; // Impede salvar projeto já aberto com este botão
 
             const q1 = document.getElementById('q1_marca').value.trim();
             const q3 = document.getElementById('q3_lojas').value;
