@@ -33,6 +33,7 @@
 
     <div id="toastContainer" class="fixed top-4 right-4 z-[100] flex flex-col gap-2"></div>
 
+    <!-- Recuperação de Senha -->
     <div id="forgotPasswordModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] relative">
             <button onclick="closeModal('forgotPasswordModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
@@ -66,6 +67,7 @@
         </div>
     </div>
 
+    <!-- Novo Usuário Admin -->
     <div id="adminUserModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-[450px] max-w-[90%] relative">
             <button onclick="closeModal('adminUserModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
@@ -111,6 +113,7 @@
         </div>
     </div>
 
+    <!-- Modais de Exclusão -->
     <div id="deleteUserModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[70]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%]">
             <div class="flex items-center gap-3 mb-4 text-red-600">
@@ -176,7 +179,7 @@
     <div id="loginScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-[400px] max-w-[90%] text-center">
             <div class="mb-6 flex justify-center">
-                <img src="totvs.png" alt="TOTVS Logo" class="h-24 w-auto object-contain mx-auto" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Totvs-logo.png'">
+                <img src="totvs.png" alt="TOTVS Logo" class="h-24 w-auto object-contain mx-auto">
             </div>
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Projetos Food</h2>
 
@@ -204,7 +207,7 @@
         <div class="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm flex-shrink-0">
             <div class="p-4 border-b border-gray-200">
                 <div class="flex items-center gap-3">
-                    <img src="totvs.png" alt="TOTVS Logo" class="h-8 w-auto object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Totvs-logo.png'">
+                    <img src="totvs.png" alt="TOTVS Logo" class="h-8 w-auto object-contain">
                     <span class="font-bold text-lg text-gray-800">Projetos Food</span>
                 </div>
             </div>
@@ -263,7 +266,7 @@
             <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0 h-[73px]">
                 <h1 class="text-2xl font-bold text-gray-800" id="viewTitle">Dashboard de Projetos</h1>
                 <div id="headerActions">
-                    <button id="btnOpenProject" onclick="switchView('project-form')" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2">
+                    <button id="btnOpenProject" onclick="abrirNovoProjeto()" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2">
                         <i class="fas fa-plus"></i> Novo Projeto
                     </button>
                 </div>
@@ -353,10 +356,12 @@
                     <!-- Cabeçalho do Projeto com Abas -->
                     <div class="bg-white border-b border-gray-200 flex flex-col">
                         <div class="p-6 pb-4 flex justify-between items-start">
-                            <div class="flex-1">
-                                <h2 class="text-3xl font-bold text-gray-800 pr-4" id="formMainTitle">Abertura de Projeto</h2>
+                            <div class="flex-1 overflow-hidden">
+                                <h2 class="text-3xl font-bold text-gray-800 pr-4 truncate" id="formMainTitle">Abertura de Projeto</h2>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap" id="formStatusBadge">Status: Em Criação</span>
+                            <div class="shrink-0 pt-1">
+                                <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap" id="formStatusBadge">Status: Em Criação</span>
+                            </div>
                         </div>
                         
                         <div id="projectTabs" class="hidden px-6 flex gap-8 border-t border-gray-100 pt-2 bg-gray-50">
@@ -563,7 +568,6 @@
         let projectToDeleteId = null;
         let unsubscribeProjects = null;
 
-        // Arrays com as 33 perguntas do Pré-Vendas
         const eixoVender = [
             "1. Possui estratégias para aumentar o ticket médio, como combos, venda orientada, cross-sell e up-sell?",
             "2. Como gerencia o envio de pedidos para a cozinha?",
@@ -780,6 +784,12 @@
             });
         };
 
+        window.abrirNovoProjeto = function() {
+            currentProjectId = null;
+            resetForm();
+            switchView('project-form');
+        };
+
         window.switchView = function(viewId) {
             ['nav-dashboard', 'nav-admin'].forEach(id => {
                 const el = document.getElementById(id);
@@ -811,7 +821,6 @@
             } else if (viewId === 'project-form') {
                 document.getElementById('viewTitle').textContent = 'Detalhes do Projeto';
                 btnOpenProject.classList.add('hidden');
-                if (!currentProjectId) resetForm();
             }
         };
 
@@ -1052,14 +1061,13 @@
             
             habilitarCampos('s1-field', true);
             habilitarCampos('s1-optional-field', true);
+            habilitarCampos('s2-field', false); // Desativa as perguntas do pré-vendas para não bloquear a criação do projeto
             document.getElementById('s1-actions').classList.remove('hidden');
             
-            // UI Setup for New Project
             document.getElementById('formMainTitle').textContent = 'Abertura de Projeto';
             document.getElementById('formStatusBadge').textContent = 'Status: Em Criação';
-            document.getElementById('formStatusBadge').className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200';
+            document.getElementById('formStatusBadge').className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap';
             
-            // Hide Tabs for new project
             document.getElementById('projectTabs').classList.add('hidden');
             switchProjectTab('documentacao');
             
@@ -1081,7 +1089,6 @@
                 if(el) el.value = project[`q_class_${i}`] || '';
             }
             
-            // UI Setup for Existing Project
             document.getElementById('formMainTitle').textContent = project.nome;
             document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
             
@@ -1090,7 +1097,6 @@
                              project.status === 'Fora do Perfil' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-blue-100 text-blue-700 border-blue-200';
             document.getElementById('formStatusBadge').className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor} whitespace-nowrap`;
             
-            // Show Tabs
             document.getElementById('projectTabs').classList.remove('hidden');
             switchProjectTab('documentacao');
             
