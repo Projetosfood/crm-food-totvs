@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Projetos - Abertura e Gestão</title>
+    <title>TOTVS - Projetos Food</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -31,17 +31,14 @@
 </head>
 <body class="bg-gray-50 h-screen w-screen overflow-hidden font-sans text-gray-800">
 
-    <!-- Toast Notification Container -->
     <div id="toastContainer" class="fixed top-4 right-4 z-[100] flex flex-col gap-2"></div>
 
-    <!-- Modal Recuperar/Criar Senha -->
     <div id="forgotPasswordModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] relative">
             <button onclick="closeModal('forgotPasswordModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class="fas fa-times"></i>
             </button>
             
-            <!-- Step 1: E-mail Verification -->
             <div id="verifyEmailForm">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Primeiro Acesso / Recuperação</h3>
                 <p class="text-sm text-gray-600 mb-4">Digite seu e-mail corporativo para verificar sua conta.</p>
@@ -54,7 +51,6 @@
                 </form>
             </div>
 
-            <!-- Step 2: Define New Password -->
             <div id="definePasswordForm" class="hidden">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Definir Senha</h3>
                 <p class="text-sm text-emerald-600 font-medium mb-4"><i class="fas fa-check-circle mr-1"></i> Conta localizada!</p>
@@ -70,7 +66,6 @@
         </div>
     </div>
 
-    <!-- Modal Criar Usuário (Admin) -->
     <div id="adminUserModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[60]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-[450px] max-w-[90%] relative">
             <button onclick="closeModal('adminUserModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
@@ -116,7 +111,6 @@
         </div>
     </div>
 
-    <!-- Modal Excluir Usuário -->
     <div id="deleteUserModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[70]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%]">
             <div class="flex items-center gap-3 mb-4 text-red-600">
@@ -135,7 +129,6 @@
         </div>
     </div>
 
-    <!-- Modal Excluir Projeto -->
     <div id="deleteProjectModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[70]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%]">
             <div class="flex items-center gap-3 mb-4 text-red-600">
@@ -154,14 +147,13 @@
         </div>
     </div>
 
-    <!-- Modal Sucesso e Falha do Projeto -->
     <div id="projectSuccessModal" class="fixed inset-0 bg-gray-900/50 hidden items-center justify-center z-[80]">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-96 max-w-[90%] text-center relative transform transition-all scale-95 opacity-0 duration-300" id="projectSuccessModalContent">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 mb-4">
                 <i class="fas fa-check text-2xl text-emerald-600"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Projeto Salvo com Sucesso!</h3>
-            <p class="text-sm text-gray-500 mb-6">O projeto atende aos requisitos e foi enviado para a fila de Pré-vendas.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Projeto Aberto com Sucesso!</h3>
+            <p class="text-sm text-gray-500 mb-6">O projeto foi salvo e enviado para a fila de Pré-vendas.</p>
             <button type="button" onclick="closeProjectModal('success')" class="w-full inline-flex justify-center rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
                 Ir para Dashboard
             </button>
@@ -174,7 +166,7 @@
                 <i class="fas fa-times text-2xl text-red-600"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">Critérios Não Atendidos</h3>
-            <p class="text-sm text-gray-600 mb-6">O cliente não tem os requisitos para ser um Projeto (Mínimo de 10 lojas).<br><br>Por favor, comunique o líder do setor através do e-mail:<br><strong class="text-gray-900">kevenny.costa@totvs.com.br</strong></p>
+            <p class="text-sm text-gray-600 mb-6">O cliente não tem os critérios para ser um Projeto.<br><br>Por favor, comunique o líder do setor através do e-mail:<br><strong class="text-gray-900">kevenny.costa@totvs.com.br</strong></p>
             <button type="button" onclick="closeProjectModal('failure')" class="w-full inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
                 Ir para Dashboard
             </button>
@@ -184,12 +176,9 @@
     <div id="loginScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-[400px] max-w-[90%] text-center">
             <div class="mb-6 flex justify-center">
-                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
-                    <i class="fas fa-chart-pie text-3xl text-white -rotate-3"></i>
-                </div>
+                <img src="https://image-placeholder.com/images/actual-size/75x75.png" onerror="this.src='https://placehold.co/75x75/0ea5e9/ffffff?text=T'" alt="TOTVS Logo" class="w-[75px] h-[75px] rounded-xl object-contain">
             </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">CRM Projetos</h2>
-            <p class="text-gray-500 mb-6 text-sm">Abertura e Gestão</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">TOTVS - Projetos Food</h2>
 
             <form id="loginForm" class="text-left space-y-4">
                 <div>
@@ -215,10 +204,8 @@
         <div class="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm flex-shrink-0">
             <div class="p-4 border-b border-gray-200">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                        <i class="fas fa-chart-pie text-white text-sm"></i>
-                    </div>
-                    <span class="font-bold text-lg text-gray-800">CRM Projetos</span>
+                    <img src="https://image-placeholder.com/images/actual-size/32x32.png" onerror="this.src='https://placehold.co/32x32/0ea5e9/ffffff?text=T'" alt="TOTVS Logo" class="w-8 h-8 rounded-lg object-contain bg-blue-50">
+                    <span class="font-bold text-lg text-gray-800">TOTVS - Projetos Food</span>
                 </div>
             </div>
 
@@ -228,7 +215,6 @@
                     <i class="fas fa-columns w-5 text-center"></i> Dashboard
                 </button>
                 
-                <!-- Tópico PROJETOS -->
                 <div class="pt-6 pb-2">
                     <div class="flex items-center justify-between px-3">
                         <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Projetos</p>
@@ -239,7 +225,6 @@
                     <p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>
                 </div>
 
-                <!-- Tópico PROJETOS SEM REQUISITOS -->
                 <div class="pt-2 pb-2 mt-2">
                     <div class="flex items-center justify-between px-3">
                         <p class="text-xs font-semibold text-red-400 uppercase tracking-wider">Sem Requisitos</p>
@@ -278,7 +263,7 @@
             <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0 h-[73px]">
                 <h1 class="text-2xl font-bold text-gray-800" id="viewTitle">Dashboard de Projetos</h1>
                 <div id="headerActions">
-                    <button id="btnOpenProject" onclick="switchView('project-form')" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors items-center gap-2">
+                    <button id="btnOpenProject" onclick="switchView('project-form')" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2">
                         <i class="fas fa-plus"></i> Novo Projeto
                     </button>
                 </div>
@@ -352,7 +337,6 @@
                 </div>
             </main>
 
-            <!-- View: Project Form -->
             <main id="view-project-form" class="hidden flex-1 overflow-auto p-6 bg-gray-50/50">
                 <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
                     
@@ -364,7 +348,7 @@
                     <div id="preVendasBanner" class="hidden bg-amber-50 p-6 border-b border-amber-200 flex justify-between items-center">
                         <div>
                             <h4 class="text-amber-800 font-bold text-lg"><i class="fas fa-clock mr-2"></i> Aguardando Mapeamento</h4>
-                            <p class="text-amber-700 text-sm">Este projeto requer o preenchimento da Classificação e do Mapeamento de Negócio pelo Pré-vendas.</p>
+                            <p class="text-amber-700 text-sm">Este projeto requer o preenchimento do Mapeamento de Negócio pelo Pré-vendas.</p>
                         </div>
                         <button type="button" id="btnIniciarPreVendas" onclick="iniciarPreVendas()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors shadow-sm hidden">
                             Preencher Mapeamento
@@ -439,19 +423,18 @@
                                 </div>
                             </div>
 
-                            <!-- SEÇÃO 1.1: Classificação do Cliente (Opcional p/ Comercial) -->
                             <div class="flex items-center gap-3 mb-6 pb-2 border-b mt-10">
                                 <div class="bg-indigo-100 p-2 rounded text-indigo-600"><i class="fas fa-tags"></i></div>
                                 <div>
                                     <h3 class="text-xl font-bold text-gray-800">Classificação do Cliente</h3>
-                                    <p class="text-sm text-gray-500 font-normal">Preenchimento opcional para Comercial. Obrigatório para finalizar o Mapeamento.</p>
+                                    <p class="text-sm text-gray-500 font-normal">Preenchimento opcional no momento da Abertura. Obrigatório para finalizar o Mapeamento.</p>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div><label class="block text-sm font-medium text-gray-700 mb-1">1. Número da OP</label><input type="text" id="q_class_1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
                                 <div><label class="block text-sm font-medium text-gray-700 mb-1">2. O cliente está ciente das agendas? (Kickoff, Lab, etc)</label><input type="text" id="q_class_2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">3. Cliente ciente dos requisitos mínimos p/ sistema?</label><input type="text" id="q_class_3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                <div><label class="block text-sm font-medium text-gray-700 mb-1">3. Cliente ciente dos requisitos mínimos p/ implantação?</label><input type="text" id="q_class_3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
                                 <div><label class="block text-sm font-medium text-gray-700 mb-1">4. Quantidade de lojas contratadas?</label><input type="number" id="q_class_4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
                                 <div><label class="block text-sm font-medium text-gray-700 mb-1">5. Produtos contratados?</label><input type="text" id="q_class_5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
                                 <div><label class="block text-sm font-medium text-gray-700 mb-1">6. Quantidade de integrações?</label><input type="number" id="q_class_6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
@@ -466,14 +449,12 @@
                             </div>
                             
                             <div id="s1-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
-                                <!-- Agora mudou para um botão Submit real para disparar a validação do HTML5 -->
                                 <button type="submit" id="btnSubmitSection1" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
                                     Salvar Projeto <i class="fas fa-save"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- SECTION 2: Pré-vendas (Mapeamento) -->
                         <div id="section2_prevendas" class="hidden form-section border-t border-gray-200 pt-8 mt-4">
                             <div class="flex items-center gap-3 mb-6 pb-2 border-b">
                                 <div class="bg-amber-100 p-2 rounded text-amber-600"><i class="fas fa-clipboard-check"></i></div>
@@ -481,13 +462,11 @@
                             </div>
                             
                             <div class="space-y-8">
-                                <!-- Eixo Vender -->
                                 <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
                                     <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Eixo Vender</h4>
                                     <div id="eixoVenderContainer" class="space-y-5"></div>
                                 </div>
 
-                                <!-- Eixo Gerir -->
                                 <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-100">
                                     <h4 class="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2"><i class="fas fa-cogs"></i> Eixo Gerir</h4>
                                     <div id="eixoGerirContainer" class="space-y-5"></div>
@@ -598,7 +577,6 @@
             renderFields(eixoGerir, 'eixoGerirContainer', 'pv_g_', 12);
         }
 
-        // Window UI Functions
         window.closeModal = (id) => document.getElementById(id).classList.replace('flex', 'hidden');
 
         window.showProjectModal = (type) => {
@@ -755,7 +733,7 @@
             };
             document.getElementById('viewTitle').textContent = titles[viewId];
 
-            // Esconde ou exibe o botão "Novo Projeto" dependendo da tela atual e do perfil do usuário
+            // Hide the + Novo Projeto button on all screens except the dashboard
             const btnOpenProject = document.getElementById('btnOpenProject');
             if (viewId === 'dashboard') {
                 btnOpenProject.classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
@@ -891,8 +869,11 @@
                 renderProjectsDashboard();
             }, (error) => {
                 console.error("Erro snap projects:", error);
-                if (error.code === 'permission-denied') showError("Acesso Negado. Configure as Regras de Segurança no painel do Firebase.");
-                else showError("Falha na conexão com o banco de dados.");
+                if (error.code === 'permission-denied') {
+                    showError("Acesso Negado (Permissões do Firebase). Configure as regras do Firestore.");
+                } else {
+                    showError("Falha na conexão com o banco de dados. " + error.message);
+                }
             });
         }
 
@@ -1008,14 +989,12 @@
         window.openProjectDetails = function(project) {
             currentProjectId = project.id;
             
-            // Carrega 10 obrigatórias
             for(let i=1; i<=10; i++) {
                 const map = {1:'marca', 2:'solucao', 3:'lojas', 4:'data_inicio', 5:'data_fim', 6:'escopo', 7:'valor_negocio', 8:'stakeholders', 9:'aceite', 10:'inegociavel'};
                 const el = document.getElementById(`q${i}_${map[i]}`);
                 if(el) el.value = project[`q${i}_${map[i]}`] || '';
             }
 
-            // Carrega 14 de classificação
             for(let i=1; i<=14; i++) {
                 const el = document.getElementById(`q_class_${i}`);
                 if(el) el.value = project[`q_class_${i}`] || '';
@@ -1063,7 +1042,6 @@
             document.getElementById('preVendasBanner').classList.add('hidden');
             document.getElementById('section2_prevendas').classList.remove('hidden');
             
-            // Destrava a Classificação E o Mapeamento
             habilitarCampos('s1-optional-field', true); 
             habilitarCampos('s2-field', true);
             document.getElementById('s2-actions').classList.remove('hidden');
@@ -1080,7 +1058,7 @@
 
         document.getElementById('projectForm').addEventListener('submit', async function(e) {
             e.preventDefault(); 
-            if(currentProjectId) return; // Só permite disparar no modo de criação
+            if(currentProjectId) return;
 
             const q1 = document.getElementById('q1_marca').value.trim();
             const q3 = document.getElementById('q3_lojas').value;
@@ -1096,7 +1074,6 @@
                 q10_inegociavel: document.getElementById('q10_inegociavel').value.trim()
             };
 
-            // Salva as 14 opcionais
             for(let i=1; i<=14; i++) {
                 projectData[`q_class_${i}`] = document.getElementById(`q_class_${i}`).value.trim();
             }
@@ -1115,12 +1092,10 @@
             if(!form.checkValidity()) { form.reportValidity(); return; }
 
             const prevendasData = {};
-            // Coleta Mapeamento
             for(let i=1; i<=33; i++) {
                 const prefix = i <= 11 ? 'pv_v_' : 'pv_g_';
                 prevendasData[prefix + i] = document.getElementById(prefix + i).value.trim();
             }
-            // Coleta Classificação (que o pré-vendas pode ter terminado de preencher)
             for(let i=1; i<=14; i++) {
                 prevendasData[`q_class_${i}`] = document.getElementById(`q_class_${i}`).value.trim();
             }
