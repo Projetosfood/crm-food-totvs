@@ -176,10 +176,8 @@
     <div id="loginScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-[400px] max-w-[90%] text-center">
             <div class="mb-6 flex justify-center">
-                <!-- Alterado logo e tamanho do login -->
-                <img src="totvs.png" alt="TOTVS Logo" class="h-24 w-auto object-contain mx-auto" onerror="this.src='https://placehold.co/120x60/0ea5e9/ffffff?text=TOTVS'">
+                <img src="totvs.png" alt="TOTVS Logo" class="h-24 w-auto object-contain mx-auto" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Totvs-logo.png'">
             </div>
-            <!-- Removido o subtitulo -->
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Projetos Food</h2>
 
             <form id="loginForm" class="text-left space-y-4">
@@ -206,8 +204,7 @@
         <div class="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm flex-shrink-0">
             <div class="p-4 border-b border-gray-200">
                 <div class="flex items-center gap-3">
-                    <!-- Alterado logo, tamanho e título na sidebar -->
-                    <img src="totvs.png" alt="TOTVS Logo" class="h-8 w-auto object-contain" onerror="this.src='https://placehold.co/60x20/0ea5e9/ffffff?text=TOTVS'">
+                    <img src="totvs.png" alt="TOTVS Logo" class="h-8 w-auto object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Totvs-logo.png'">
                     <span class="font-bold text-lg text-gray-800">Projetos Food</span>
                 </div>
             </div>
@@ -353,146 +350,181 @@
             <main id="view-project-form" class="hidden flex-1 overflow-auto p-6 bg-gray-50/50">
                 <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
                     
-                    <div class="bg-gray-50 border-b border-gray-200 p-6 flex justify-between items-center">
-                        <h2 class="text-lg font-bold text-gray-800" id="formMainTitle">Abertura de Projeto</h2>
-                        <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200" id="formStatusBadge">Status: Em Criação</span>
-                    </div>
-
-                    <div id="preVendasBanner" class="hidden bg-amber-50 p-6 border-b border-amber-200 flex justify-between items-center">
-                        <div>
-                            <h4 class="text-amber-800 font-bold text-lg"><i class="fas fa-clock mr-2"></i> Aguardando Mapeamento</h4>
-                            <p class="text-amber-700 text-sm">Este projeto requer o preenchimento do Mapeamento de Negócio pelo Pré-vendas.</p>
+                    <!-- Novo Cabeçalho do Projeto com Abas -->
+                    <div class="bg-white border-b border-gray-200 flex flex-col">
+                        <div class="p-6 pb-4 flex justify-between items-start">
+                            <div class="flex-1">
+                                <h2 class="text-3xl font-bold text-gray-800 pr-4" id="formMainTitle">Abertura de Projeto</h2>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200 whitespace-nowrap" id="formStatusBadge">Status: Em Criação</span>
                         </div>
-                        <button type="button" id="btnIniciarPreVendas" onclick="iniciarPreVendas()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors shadow-sm hidden">
-                            Preencher Mapeamento
-                        </button>
-                    </div>
-
-                    <form id="projectForm" class="p-8">
                         
-                        <div id="section1" class="form-section">
-                            <div class="flex items-center gap-3 mb-6 pb-2 border-b">
-                                <div class="bg-blue-100 p-2 rounded text-blue-600"><i class="fas fa-briefcase"></i></div>
-                                <h3 class="text-xl font-bold text-gray-800">Dados de Abertura (Comercial)</h3>
-                            </div>
+                        <div id="projectTabs" class="hidden px-6 flex gap-8 border-t border-gray-100 pt-2 bg-gray-50">
+                            <button type="button" onclick="switchProjectTab('documentacao')" id="tab-btn-documentacao" class="pb-3 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-colors uppercase tracking-wide">Documentação</button>
+                            <button type="button" onclick="switchProjectTab('cronograma')" id="tab-btn-cronograma" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 font-medium text-sm transition-colors uppercase tracking-wide">Cronograma do Projeto</button>
+                            <button type="button" onclick="switchProjectTab('rollout')" id="tab-btn-rollout" class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 font-medium text-sm transition-colors uppercase tracking-wide">Rollout do Projeto</button>
+                        </div>
+                    </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">1. Nome da Marca *</label>
-                                    <input type="text" id="q1_marca" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">2. Solução contratada para: *</label>
-                                    <select id="q2_solucao" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="Novo Cliente">Novo Cliente</option>
-                                        <option value="Novo Módulo">Novo Módulo</option>
-                                        <option value="Migração de PDV">Migração de PDV</option>
-                                        <option value="Nova Funcionalidade">Nova Funcionalidade</option>
-                                    </select>
-                                </div>
+                    <!-- Conteúdo Aba: Documentação -->
+                    <div id="tab-content-documentacao" class="p-8">
+                        <div id="preVendasBanner" class="hidden bg-amber-50 p-6 border border-amber-200 rounded-lg mb-8 flex justify-between items-center shadow-sm">
+                            <div>
+                                <h4 class="text-amber-800 font-bold text-lg"><i class="fas fa-clock mr-2"></i> Aguardando Mapeamento</h4>
+                                <p class="text-amber-700 text-sm">Este projeto requer o preenchimento do Mapeamento de Negócio pelo Pré-vendas.</p>
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">3. Lojas ativas (Físicas/Dark Kitchen) *</label>
-                                    <input type="number" id="q3_lojas" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">4. Início da Loja Piloto *</label>
-                                    <input type="date" id="q4_data_inicio" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">5. Conclusão da Loja Piloto *</label>
-                                    <input type="date" id="q5_data_fim" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                </div>
-                            </div>
-
-                            <div class="space-y-6 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">6. Liste resumidamente os módulos/sistemas contratados (O que SERÁ entregue) e o que ficou acordado que NÃO faz parte desta fase (O que está FORA do escopo)? *</label>
-                                    <textarea id="q6_escopo" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">7. Qual é a oportunidade de negócio ou valor que a franquia espera alcançar com o ecossistema TOTVS nesta implantação? *</label>
-                                    <textarea id="q7_valor_negocio" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">8. A execução exige gerenciar agendas e dependências entre diferentes stakeholders (franqueados, time de TI da franquia, terceiros)? *</label>
-                                    <select id="q8_stakeholders" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="Sim">Sim, exige gerenciamento</option>
-                                        <option value="Não">Não</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">9. Qual é o critério formal e objetivo que a franquia utilizará para assinar o termo de aceite da implantação? *</label>
-                                    <textarea id="q9_aceite" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">10. O que é inegociável na operação, na visão do cliente? *</label>
-                                    <textarea id="q10_inegociavel" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-3 mb-6 pb-2 border-b mt-10">
-                                <div class="bg-indigo-100 p-2 rounded text-indigo-600"><i class="fas fa-tags"></i></div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-800">Classificação do Cliente</h3>
-                                    <p class="text-sm text-gray-500 font-normal">Preenchimento opcional no momento da Abertura. Obrigatório para finalizar o Mapeamento.</p>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">1. Número da OP</label><input type="text" id="q_class_1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">2. O cliente está ciente das agendas? Kickoff, Laboratório, Validações, Treinamentos, Loja Piloto.</label><input type="text" id="q_class_2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">3. O cliente foi informado e está de acordo com os requisitos mínimos para implantação do sistema?</label><input type="text" id="q_class_3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">4. Quantidade de lojas contratadas?</label><input type="number" id="q_class_4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">5. Produtos contratados?</label><input type="text" id="q_class_5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">6. Quantidade de integrações?</label><input type="number" id="q_class_6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">7. Necessidade de desenvolvimento?</label><input type="text" id="q_class_7" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">8. Lojas com regime fiscal diferente?</label><input type="text" id="q_class_8" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">9. Complexidade operacional?</label><input type="text" id="q_class_9" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">10. Cliente estratégico?</label><input type="text" id="q_class_10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">11. Potencial de expansão da marca?</label><input type="text" id="q_class_11" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">12. Potencial de receita recorrente?</label><input type="text" id="q_class_12" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">13. Quantas unidades o cliente deseja realizar rollout?</label><input type="number" id="q_class_13" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">14. Projeção de rollout de lojas por semana?</label><input type="number" id="q_class_14" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
-                            </div>
-                            
-                            <div id="s1-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
-                                <button type="submit" id="btnSubmitSection1" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
-                                    Salvar Projeto <i class="fas fa-save"></i>
-                                </button>
-                            </div>
+                            <button type="button" id="btnIniciarPreVendas" onclick="iniciarPreVendas()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors shadow-sm hidden">
+                                Preencher Mapeamento
+                            </button>
                         </div>
 
-                        <div id="section2_prevendas" class="hidden form-section border-t border-gray-200 pt-8 mt-4">
-                            <div class="flex items-center gap-3 mb-6 pb-2 border-b">
-                                <div class="bg-amber-100 p-2 rounded text-amber-600"><i class="fas fa-clipboard-check"></i></div>
-                                <h3 class="text-xl font-bold text-gray-800">Mapeamento de Negócio (Pré-vendas)</h3>
-                            </div>
-                            
-                            <div class="space-y-8">
-                                <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
-                                    <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Eixo Vender</h4>
-                                    <div id="eixoVenderContainer" class="space-y-5"></div>
+                        <form id="projectForm">
+                            <div id="section1" class="form-section">
+                                <div class="flex items-center gap-3 mb-6 pb-2 border-b">
+                                    <div class="bg-blue-100 p-2 rounded text-blue-600"><i class="fas fa-briefcase"></i></div>
+                                    <h3 class="text-xl font-bold text-gray-800">Dados de Abertura (Comercial)</h3>
                                 </div>
 
-                                <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-100">
-                                    <h4 class="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2"><i class="fas fa-cogs"></i> Eixo Gerir</h4>
-                                    <div id="eixoGerirContainer" class="space-y-5"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">1. Nome da Marca *</label>
+                                        <input type="text" id="q1_marca" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">2. Solução contratada para: *</label>
+                                        <select id="q2_solucao" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                            <option value="">Selecione...</option>
+                                            <option value="Novo Cliente">Novo Cliente</option>
+                                            <option value="Novo Módulo">Novo Módulo</option>
+                                            <option value="Migração de PDV">Migração de PDV</option>
+                                            <option value="Nova Funcionalidade">Nova Funcionalidade</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">3. Lojas ativas (Físicas/Dark Kitchen) *</label>
+                                        <input type="number" id="q3_lojas" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">4. Início da Loja Piloto *</label>
+                                        <input type="date" id="q4_data_inicio" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">5. Conclusão da Loja Piloto *</label>
+                                        <input type="date" id="q5_data_fim" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-6 mb-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">6. Liste resumidamente os módulos/sistemas contratados (O que SERÁ entregue) e o que ficou acordado que NÃO faz parte desta fase (O que está FORA do escopo)? *</label>
+                                        <textarea id="q6_escopo" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">7. Qual é a oportunidade de negócio ou valor que a franquia espera alcançar com o ecossistema TOTVS nesta implantação? *</label>
+                                        <textarea id="q7_valor_negocio" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">8. A execução exige gerenciar agendas e dependências entre diferentes stakeholders (franqueados, time de TI da franquia, terceiros)? *</label>
+                                        <select id="q8_stakeholders" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required>
+                                            <option value="">Selecione...</option>
+                                            <option value="Sim">Sim, exige gerenciamento</option>
+                                            <option value="Não">Não</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">9. Qual é o critério formal e objetivo que a franquia utilizará para assinar o termo de aceite da implantação? *</label>
+                                        <textarea id="q9_aceite" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">10. O que é inegociável na operação, na visão do cliente? *</label>
+                                        <textarea id="q10_inegociavel" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none s1-field" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 mb-6 pb-2 border-b mt-10">
+                                    <div class="bg-indigo-100 p-2 rounded text-indigo-600"><i class="fas fa-tags"></i></div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-800">Classificação do Cliente</h3>
+                                        <p class="text-sm text-gray-500 font-normal">Preenchimento opcional no momento da Abertura. Obrigatório para finalizar o Mapeamento.</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">1. Número da OP</label><input type="text" id="q_class_1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">2. O cliente está ciente das agendas? Kickoff, Laboratório, Validações, Treinamentos, Loja Piloto.</label><input type="text" id="q_class_2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">3. O cliente foi informado e está de acordo com os requisitos mínimos para implantação do sistema?</label><input type="text" id="q_class_3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">4. Quantidade de lojas contratadas?</label><input type="number" id="q_class_4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">5. Produtos contratados?</label><input type="text" id="q_class_5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">6. Quantidade de integrações?</label><input type="number" id="q_class_6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">7. Necessidade de desenvolvimento?</label><input type="text" id="q_class_7" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">8. Lojas com regime fiscal diferente?</label><input type="text" id="q_class_8" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">9. Complexidade operacional?</label><input type="text" id="q_class_9" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">10. Cliente estratégico?</label><input type="text" id="q_class_10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">11. Potencial de expansão da marca?</label><input type="text" id="q_class_11" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">12. Potencial de receita recorrente?</label><input type="text" id="q_class_12" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">13. Quantas unidades o cliente deseja realizar rollout?</label><input type="number" id="q_class_13" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-1">14. Projeção de rollout de lojas por semana?</label><input type="number" id="q_class_14" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none s1-optional-field"></div>
+                                </div>
+                                
+                                <div id="s1-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
+                                    <button type="submit" id="btnSubmitSection1" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                                        Salvar Projeto <i class="fas fa-save"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <div id="s2-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
-                                <button type="button" onclick="salvarPreVendas()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
-                                    Salvar Mapeamento e Enviar p/ PMO <i class="fas fa-check-double"></i>
-                                </button>
+                            <div id="section2_prevendas" class="hidden form-section border-t border-gray-200 pt-8 mt-4">
+                                <div class="flex items-center gap-3 mb-6 pb-2 border-b">
+                                    <div class="bg-amber-100 p-2 rounded text-amber-600"><i class="fas fa-clipboard-check"></i></div>
+                                    <h3 class="text-xl font-bold text-gray-800">Mapeamento de Negócio (Pré-vendas)</h3>
+                                </div>
+                                
+                                <div class="space-y-8">
+                                    <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
+                                        <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Eixo Vender</h4>
+                                        <div id="eixoVenderContainer" class="space-y-5"></div>
+                                    </div>
+
+                                    <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-100">
+                                        <h4 class="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2"><i class="fas fa-cogs"></i> Eixo Gerir</h4>
+                                        <div id="eixoGerirContainer" class="space-y-5"></div>
+                                    </div>
+                                </div>
+
+                                <div id="s2-actions" class="mt-8 flex justify-end border-t border-gray-100 pt-6">
+                                    <button type="button" onclick="salvarPreVendas()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                                        Salvar Mapeamento e Enviar p/ PMO <i class="fas fa-check-double"></i>
+                                    </button>
+                                </div>
                             </div>
+                        </form>
+                    </div>
+
+                    <!-- Conteúdo Aba: Cronograma -->
+                    <div id="tab-content-cronograma" class="hidden p-8 bg-gray-50/30">
+                        <div class="max-w-md mx-auto text-center py-16">
+                            <div class="w-20 h-20 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                                <i class="fas fa-calendar-alt text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Cronograma do Projeto</h3>
+                            <p class="text-gray-500">O módulo de gestão de cronograma está em desenvolvimento. Em breve você poderá criar e acompanhar as etapas do projeto aqui.</p>
                         </div>
+                    </div>
 
-                    </form>
+                    <!-- Conteúdo Aba: Rollout -->
+                    <div id="tab-content-rollout" class="hidden p-8 bg-gray-50/30">
+                        <div class="max-w-md mx-auto text-center py-16">
+                            <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                                <i class="fas fa-rocket text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Rollout do Projeto</h3>
+                            <p class="text-gray-500">O módulo de acompanhamento de rollout de lojas está em desenvolvimento. Acompanhe expansões futuras por aqui.</p>
+                        </div>
+                    </div>
+
                 </div>
             </main>
         </div>
@@ -529,6 +561,7 @@
         let allUsers = [];
         let userToDeleteId = null;
         let projectToDeleteId = null;
+        let unsubscribeProjects = null;
 
         // Arrays com as 33 perguntas do Pré-Vendas
         const eixoVender = [
@@ -640,9 +673,8 @@
 
         function showError(message) {
             const loadingMsg = document.getElementById('loadingProjectsMessage');
-            if(loadingMsg) {
-                loadingMsg.innerHTML = 'Falha ao carregar';
-            }
+            if(loadingMsg) loadingMsg.innerHTML = 'Falha ao carregar';
+            
             const banner = document.getElementById('connectionErrorBanner');
             if(banner) {
                 document.getElementById('errorBannerMessage').textContent = message;
@@ -697,7 +729,7 @@
                 else showToast('E-mail ou senha incorretos.', 'error');
             } catch (error) {
                 console.error("Login erro:", error);
-                showToast('Erro ao validar login.', 'error');
+                showToast('Erro ao conectar com o servidor.', 'error');
             }
         });
 
@@ -712,10 +744,6 @@
             document.getElementById('userRoleDisplay').textContent = user.perfil;
             document.getElementById('userInitials').textContent = user.nome.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
 
-            // Ajuste aqui para garantir que esconde o botão se não estiver no dashboard
-            const isDashboard = !document.getElementById('view-dashboard').classList.contains('hidden');
-            document.getElementById('btnOpenProject').classList.toggle('hidden', !(isDashboard && ['Hunter', 'Administrador'].includes(currentRole)));
-            
             document.getElementById('adminNavContainer').classList.toggle('hidden', currentRole !== 'Administrador');
 
             loadProjects(); 
@@ -728,10 +756,29 @@
         window.handleLogout = function() {
             currentUser = null;
             currentRole = null;
+            if(unsubscribeProjects) unsubscribeProjects();
             document.getElementById('loginForm').reset();
             document.getElementById('appScreen').classList.replace('flex', 'hidden');
             document.getElementById('loginScreen').classList.replace('hidden', 'flex');
         }
+
+        window.switchProjectTab = function(tabId) {
+            const tabs = ['documentacao', 'cronograma', 'rollout'];
+            tabs.forEach(id => {
+                const btn = document.getElementById(`tab-btn-${id}`);
+                const content = document.getElementById(`tab-content-${id}`);
+                
+                if (id === tabId) {
+                    btn.classList.add('border-blue-600', 'text-blue-600');
+                    btn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-800');
+                    content.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('border-blue-600', 'text-blue-600');
+                    btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-800');
+                    content.classList.add('hidden');
+                }
+            });
+        };
 
         window.switchView = function(viewId) {
             ['nav-dashboard', 'nav-admin'].forEach(id => {
@@ -753,21 +800,19 @@
 
             document.getElementById(`view-${viewId}`).classList.remove('hidden');
 
-            const titles = {
-                'dashboard': 'Dashboard de Projetos',
-                'admin': 'Painel Administrativo',
-                'project-form': currentProjectId ? 'Detalhes do Projeto' : 'Abertura de Projeto'
-            };
-            document.getElementById('viewTitle').textContent = titles[viewId];
-
             const btnOpenProject = document.getElementById('btnOpenProject');
+            
             if (viewId === 'dashboard') {
+                document.getElementById('viewTitle').textContent = 'Dashboard de Projetos';
                 btnOpenProject.classList.toggle('hidden', !['Hunter', 'Administrador'].includes(currentRole));
-            } else {
+            } else if (viewId === 'admin') {
+                document.getElementById('viewTitle').textContent = 'Painel Administrativo';
                 btnOpenProject.classList.add('hidden');
+            } else if (viewId === 'project-form') {
+                document.getElementById('viewTitle').textContent = 'Detalhes do Projeto';
+                btnOpenProject.classList.add('hidden');
+                if (!currentProjectId) resetForm();
             }
-
-            if (viewId === 'project-form' && !currentProjectId) resetForm();
         };
 
         function loadUsers() {
@@ -887,10 +932,12 @@
 
         function loadProjects() {
             const loadingMsg = document.getElementById('loadingProjectsMessage');
-            if(loadingMsg) loadingMsg.textContent = 'Conectando ao banco de dados...';
+            if(loadingMsg) loadingMsg.textContent = 'Carregando projetos...';
             hideError();
 
-            const unsubscribe = onSnapshot(collection(db, 'projetos'), (snapshot) => {
+            if(unsubscribeProjects) unsubscribeProjects();
+
+            unsubscribeProjects = onSnapshot(collection(db, 'projetos'), (snapshot) => {
                 hideError();
                 allProjects = [];
                 snapshot.forEach(doc => allProjects.push({ id: doc.id, ...doc.data() }));
@@ -898,7 +945,7 @@
             }, (error) => {
                 console.error("Erro snap projects:", error);
                 if (error.code === 'permission-denied') {
-                    showError("O Firebase bloqueou a leitura. Por favor, libere as Regras do Firestore para permitir acesso.");
+                    showError("O Firebase bloqueou a leitura. Por favor, acesse o Console do Firebase e libere as Regras do Firestore para permitir acesso público.");
                 } else {
                     showError("Falha na conexão com o banco de dados. " + error.message);
                 }
@@ -914,7 +961,7 @@
             let countPending = 0, countReady = 0;
 
             if (allProjects.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto salvo.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum projeto salvo no banco de dados.</td></tr>`;
                 sidebarList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum projeto salvo</p>`;
                 sidebarFailedList.innerHTML = `<p class="text-xs text-gray-500 px-3 italic">Nenhum mapeado</p>`;
                 document.getElementById('statTotal').textContent = '0';
@@ -995,7 +1042,7 @@
                 showToast("Projeto excluído com sucesso!");
                 closeModal('deleteProjectModal');
                 projectToDeleteId = null;
-                switchView('dashboard'); // Volta pro dashboard caso tenha excluido por dentro do projeto
+                switchView('dashboard');
             } catch (error) { showToast("Erro ao excluir projeto.", "error"); }
         });
 
@@ -1007,9 +1054,14 @@
             habilitarCampos('s1-optional-field', true);
             document.getElementById('s1-actions').classList.remove('hidden');
             
+            // UI Setup for New Project
             document.getElementById('formMainTitle').textContent = 'Abertura de Projeto';
             document.getElementById('formStatusBadge').textContent = 'Status: Em Criação';
             document.getElementById('formStatusBadge').className = 'px-3 py-1 rounded-full text-sm font-medium border bg-blue-100 text-blue-700 border-blue-200';
+            
+            // Hide Tabs for new project
+            document.getElementById('projectTabs').classList.add('hidden');
+            switchProjectTab('documentacao');
             
             document.getElementById('preVendasBanner').classList.add('hidden');
             document.getElementById('section2_prevendas').classList.add('hidden');
@@ -1029,13 +1081,18 @@
                 if(el) el.value = project[`q_class_${i}`] || '';
             }
             
-            document.getElementById('formMainTitle').textContent = `Projeto: ${project.nome}`;
+            // UI Setup for Existing Project
+            document.getElementById('formMainTitle').textContent = project.nome;
             document.getElementById('formStatusBadge').textContent = `Status: ${project.status}`;
             
             let badgeColor = project.status === 'Aguardando Pré-vendas' ? 'bg-amber-100 text-amber-700 border-amber-200' :
                              project.status === 'Pronto para Início' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
                              project.status === 'Fora do Perfil' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-blue-100 text-blue-700 border-blue-200';
-            document.getElementById('formStatusBadge').className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor}`;
+            document.getElementById('formStatusBadge').className = `px-3 py-1 rounded-full text-sm font-medium border ${badgeColor} whitespace-nowrap`;
+            
+            // Show Tabs
+            document.getElementById('projectTabs').classList.remove('hidden');
+            switchProjectTab('documentacao');
             
             habilitarCampos('s1-field', false);
             habilitarCampos('s1-optional-field', false);
